@@ -1,0 +1,1831 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=Poppins:wght@400;500;600&display=swap');
+
+/* RESET & BASE */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+html {
+  scrollbar-width: none; /* Hide scrollbar, let Lenis handle scrolling */
+  font-family: 'Poppins', sans-serif;
+  color: #ffffff;
+  background-color: #050505; /* Deep dark mode */
+}
+html::-webkit-scrollbar { display: none; }
+body { overflow-x: hidden; }
+
+/* TYPOGRAPHY */
+h1, h2, h3, h4, h5, h6, .hero-title {
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* MASTER SCRUBBER */
+.scroll-container {
+  /* This dictates the total length of the experience. */
+  height: 3800vh;
+}
+
+/* FIXED CAMERA VIEWPORT */
+.camera {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  perspective: 1000px; /* For depth effects */
+  background-color: #050505;
+}
+
+/* SCENES & LAYERS */
+.scene {
+  position: absolute;
+  inset: 0; /* top: 0, right: 0, bottom: 0, left: 0 */
+  pointer-events: none;
+  visibility: hidden; /* Hide by default, GSAP will manage */
+}
+.scene.is-active {
+  pointer-events: auto;
+  visibility: visible;
+}
+.layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.flex-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.flex-bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 5vh;
+}
+
+/* SCENE 1 SPECIFICS */
+.iceberg-bg {
+  width: 100%;
+  height: 100%;
+  /* Fallback color if image is loading */
+  background-color: #0a0e17; 
+  background-image: linear-gradient(to bottom, rgba(5,5,5,0.2) 0%, rgba(5,5,5,0.9) 100%), url('/iceberg_bg.png');
+  background-size: cover;
+  background-position: center;
+  will-change: transform, filter;
+  /* Add scale for the subtle breathe effect */
+  transform: scale(1.05); 
+}
+
+.title-container {
+  max-width: 1400px;
+  padding: 0 2rem;
+  z-index: 5;
+}
+.title-container.flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: 2vw;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.hero-title {
+  font-size: clamp(3rem, 8vw, 8rem);
+  margin-bottom: 1.5rem;
+  white-space: nowrap;
+}
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: 500;
+  color: #a0a0a0;
+  line-height: 1.5;
+}
+
+/* SplitType Utilities - Critical for Text Reveals */
+.line { overflow: hidden; } 
+.word { display: inline-block; }
+.char { display: inline-block; }
+
+/* SCROLL CUE */
+.scroll-cue {
+  font-size: 0.875rem;
+  color: #888;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.arrow-down {
+  width: 1px;
+  height: 50px;
+  background-color: #333;
+  position: relative;
+  overflow: hidden;
+}
+.arrow-down::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  animation: scrollDrop 2s infinite ease-in-out;
+}
+@keyframes scrollDrop {
+  0% { transform: translateY(-100%); }
+  50% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+
+/* SCENE 2 & 3 STYLES */
+.s2-text.t1, .s2-text.t4 {
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  text-align: center;
+}
+
+.s2-grid {
+  display: grid;
+  grid-template-columns: 1fr 30vw 1fr; /* Give more room to text columns */
+  align-items: center;
+  gap: 4rem;
+  width: 100%;
+  max-width: 100%;
+  padding: 0 4vw;
+}
+.s2-col.left { text-align: left; }
+.s2-col.right { text-align: right; }
+
+.s2-text.t2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2rem, 3.5vw, 4.5rem); /* Slightly smaller but still bold */
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.s2-text.t3 p {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.5rem, 2.5vw, 3.5rem); /* Scaled down for elegance */
+  color: #ffffff;
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+}
+
+/* SCENE 3 STYLES */
+.globe-video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  will-change: opacity;
+}
+
+.s3-opening {
+  background-color: rgba(0, 0, 0, 0.4); /* Slight darkening for text legibility */
+}
+
+.s3a-t1 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2.5rem, 4.5vw, 4.5rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+  max-width: 900px;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+.s3a-t2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.2rem, 2vw, 2rem);
+  font-weight: 400;
+  color: #cccccc;
+  max-width: 700px;
+  text-align: center;
+}
+
+.s3b-t1, .s3c-t1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(2rem, 3.5vw, 4rem);
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  line-height: 1.2;
+  color: #ffffff;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.8);
+}
+
+.s3b-t2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+  font-weight: 500;
+  color: #ffffff;
+  text-shadow: 0 2px 15px rgba(0,0,0,0.9), 0 0 30px rgba(0,0,0,0.8);
+}
+
+.s3-temps {
+  position: relative;
+  z-index: 20;
+}
+
+.heat-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150vw;
+  height: 150vh;
+  background: radial-gradient(circle at center, rgba(255, 80, 0, 0.8) 0%, rgba(200, 20, 0, 0.4) 30%, transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+
+.s3b-map {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 1200px;
+  object-fit: contain;
+  opacity: 0.35;
+  filter: invert(1);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.s3b-content-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  width: 100%;
+  padding: 0 4rem;
+}
+
+.s3b-text-group {
+  text-align: center;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.s3b-t1 {
+  white-space: nowrap;
+}
+
+.s3b-thermometer {
+  position: absolute;
+  right: 15vw;
+  top: 50%;
+  width: 22vw;
+  max-width: 280px;
+  min-width: 160px;
+  height: auto;
+  filter: drop-shadow(0 0 15px rgba(255, 50, 0, 0.6));
+  z-index: 50; /* Keep it above other layers when moving to 3C */
+}
+
+/* Scene 3C: Ice Melting Layout */
+.s3-melting {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.s3c-left {
+  position: absolute;
+  left: 12vw;
+  top: 25%;
+  /* Removed max-width to prevent forced wrapping before the <br> */
+}
+
+.s3c-right {
+  position: absolute;
+  right: 5vw;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 45vw;
+  max-width: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.s3-melting-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 5; /* Below text and thermometer */
+}
+
+.iceberg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+  filter: brightness(0.6) contrast(1.2) saturate(1.2); /* Cinematic grading */
+  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0.2) 0%, black 50%);
+  mask-image: linear-gradient(to right, rgba(0,0,0,0.2) 0%, black 50%);
+}
+
+.s3c-bottom {
+  position: absolute;
+  bottom: 8vh;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+/* Typography matching wireframe placement */
+.s3c-t1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.8rem, 2.5vw, 3rem);
+  font-weight: 600;
+  line-height: 1.2;
+  color: #ffffff;
+  text-align: left;
+  white-space: nowrap; /* Force break only at <br> */
+}
+
+.s3c-t2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.5rem, 2vw, 2.5rem);
+  font-weight: 500;
+  color: #ffffff;
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.9); /* Ensure readable over iceberg */
+}
+
+.s3c-t3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.2rem, 1.5vw, 1.8rem);
+  font-weight: 400;
+  color: #e0e0e0;
+}
+
+/* Scene 3D: Diving Transition Layout */
+.s3-ocean-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 25; /* Above 3C, below 3D text */
+  pointer-events: none;
+}
+
+.ocean-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.6) contrast(1.1) saturate(1.2);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 15%);
+}
+
+.s3-diving {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 30;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.s3d-content {
+  width: 100%;
+  max-width: 1000px;
+  text-align: center;
+}
+
+.s3d-waves {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 4rem 0;
+  opacity: 0.8;
+}
+
+.wave-svg {
+  width: 25%;
+  height: 20px;
+}
+
+.wave-gap {
+  width: 20%; /* The gap in the middle */
+}
+
+.s3d-t1, .s3d-t2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(2rem, 3.5vw, 4rem);
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.9);
+}
+/* Scene 3E: Heatwaves */
+.s3e-warm-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 28;
+  background: transparent;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Paint-effect blobs — each is an organic blob that grows in like brushed paint */
+.paint-blob {
+  position: absolute;
+  width: 70vw;
+  height: 70vw;
+  transform: scale(0);
+  opacity: 0;
+  filter: blur(50px);
+  will-change: transform, opacity;
+  mix-blend-mode: normal;
+}
+
+/* Each blob has irregular border-radius for organic, painted feel */
+.blob-1 {
+  top: -10%;
+  left: -5%;
+  border-radius: 52% 48% 60% 40% / 55% 45% 55% 45%;
+  background: radial-gradient(circle, #ffd27a 0%, #ff9a3c 70%, transparent 100%);
+}
+
+.blob-2 {
+  top: 30%;
+  left: 55%;
+  border-radius: 48% 52% 40% 60% / 40% 60% 40% 60%;
+  background: radial-gradient(circle, #fff8dc 0%, #ffe89a 65%, transparent 100%); /* Pale cream pop */
+}
+
+.blob-3 {
+  top: 55%;
+  left: 5%;
+  border-radius: 60% 40% 52% 48% / 50% 60% 40% 50%;
+  background: radial-gradient(circle, #ff7a2c 0%, #d94818 60%, transparent 100%); /* Deeper red-orange */
+}
+
+.blob-4 {
+  top: -5%;
+  left: 45%;
+  width: 60vw;
+  height: 60vw;
+  border-radius: 45% 55% 55% 45% / 60% 40% 60% 40%;
+  background: radial-gradient(circle, #ffb878 0%, #ff8a4c 65%, transparent 100%); /* Peach */
+}
+
+.blob-5 {
+  top: 40%;
+  left: 25%;
+  width: 80vw;
+  height: 80vw;
+  border-radius: 50% 50% 48% 52% / 48% 52% 50% 50%;
+  background: radial-gradient(circle, #fff2c4 0%, #ffd27a 50%, #ff9a3c 100%);
+}
+
+.blob-6 {
+  top: 15%;
+  left: 70%;
+  width: 55vw;
+  height: 55vw;
+  border-radius: 55% 45% 50% 50% / 50% 55% 45% 50%;
+  background: radial-gradient(circle, #ffeaa0 0%, #f4a548 70%, transparent 100%); /* Amber */
+}
+
+/* Heat wave distortion layer — applies SVG turbulence filter for shimmer */
+.heat-wave-distort {
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(255, 220, 130, 0.25) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 60%, rgba(255, 150, 60, 0.2) 0%, transparent 50%),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 80px,
+      rgba(255, 230, 150, 0.18) 82px,
+      transparent 90px
+    );
+  filter: url(#heat-wave) blur(6px);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, filter;
+}
+
+/* Heat shimmer overlay — adds animated distortion-feel via blend mode */
+.heat-shimmer {
+  position: absolute;
+  top: -25%;
+  left: -25%;
+  width: 150%;
+  height: 150%;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(255, 230, 150, 0.4) 0%, transparent 35%),
+    radial-gradient(ellipse at 80% 60%, rgba(255, 120, 50, 0.35) 0%, transparent 40%),
+    radial-gradient(ellipse at 40% 80%, rgba(255, 200, 100, 0.3) 0%, transparent 35%),
+    conic-gradient(from 0deg at 50% 50%,
+      rgba(255, 200, 100, 0.15) 0deg,
+      transparent 60deg,
+      rgba(255, 140, 60, 0.2) 120deg,
+      transparent 180deg,
+      rgba(255, 220, 130, 0.15) 240deg,
+      transparent 300deg,
+      rgba(255, 200, 100, 0.15) 360deg);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  will-change: transform, opacity;
+  opacity: 0;
+  filter: blur(30px);
+}
+
+.s3-heatwave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 29;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8vw;
+}
+
+.s3e-sun-wrap {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.s3e-sun {
+  position: relative;
+  z-index: 2;
+  width: clamp(180px, 22vw, 340px);
+  height: auto;
+  filter: drop-shadow(0 0 30px rgba(255, 180, 80, 0.6))
+          drop-shadow(0 0 60px rgba(255, 120, 40, 0.4));
+}
+
+.s3e-sun-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle,
+    rgba(255, 220, 120, 0.7) 0%,
+    rgba(255, 150, 50, 0.45) 30%,
+    rgba(255, 100, 30, 0.2) 55%,
+    transparent 75%);
+  border-radius: 50%;
+  filter: blur(20px);
+  z-index: 1;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.s3e-text-group {
+  max-width: 600px;
+  text-align: left;
+}
+
+.s3e-t1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(3rem, 5vw, 6rem);
+  font-weight: 900;
+  color: #1a0a00;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+  white-space: nowrap;
+  text-shadow:
+    0 0 30px rgba(255, 245, 210, 0.85),
+    0 0 60px rgba(255, 235, 180, 0.55),
+    0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.s3e-t2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.3rem, 2vw, 2.2rem);
+  font-weight: 600;
+  color: #1a0a00;
+  line-height: 1.5;
+  text-shadow:
+    0 0 20px rgba(255, 245, 210, 0.9),
+    0 0 40px rgba(255, 235, 180, 0.6);
+}
+
+/* Scene 3F: Droughts & Wildfires */
+.s3-droughts {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 35;
+  pointer-events: none;
+}
+
+/* Parched ground — kemarau.jpg dengan fade mask atas */
+.s3f-ground {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 55vh;
+  background-image: url('/kemarau.png');
+  background-size: cover;
+  background-position: center bottom;
+  opacity: 0;
+  -webkit-mask-image: linear-gradient(to top, black 55%, rgba(0,0,0,0.6) 80%, transparent 100%);
+  mask-image: linear-gradient(to top, black 55%, rgba(0,0,0,0.6) 80%, transparent 100%);
+  filter: saturate(0.85) brightness(0.95);
+  z-index: 1;
+}
+
+.s3f-title-group {
+  position: absolute;
+  top: 10vh;
+  right: 5vw;
+  text-align: right;
+  max-width: 60vw;
+  z-index: 4;
+}
+
+.s3f-t1 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2.5rem, 5.5vw, 6rem);
+  font-weight: 900;
+  color: #1a0a00;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 1rem;
+  white-space: nowrap;
+  text-shadow:
+    0 0 30px rgba(255, 245, 210, 0.85),
+    0 0 60px rgba(255, 235, 180, 0.55),
+    0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.s3f-t2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.2rem, 1.8vw, 2rem);
+  font-weight: 600;
+  color: #1a0a00;
+  text-shadow:
+    0 0 20px rgba(255, 245, 210, 0.9),
+    0 0 40px rgba(255, 235, 180, 0.6);
+}
+
+.s3f-trees {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.s3f-tree {
+  position: absolute;
+  display: block;
+  height: auto;
+  object-fit: contain;
+  object-position: bottom center;
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+}
+
+/* Tree-1: peeking from LEFT edge — partially off-screen */
+.tree-1 {
+  bottom: -1vh;
+  left: -15vw;
+  width: clamp(440px, 30vw, 740px);
+}
+
+/* Tree-2 (largest): peeking from RIGHT edge — main hero peek */
+.tree-2 {
+  bottom: -12vh;
+  right: -20vw;
+  width: clamp(440px, 54vw, 880px);
+}
+
+/* Tree-3: smaller mid-distance tree, slightly faded back */
+.tree-3 {
+  bottom: -2vh;
+  left: 35vw;
+  width: clamp(340px, 40vw, 700px);
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2)) brightness(0.9);
+}
+
+.s3f-bottom-text {
+  position: absolute;
+  bottom: 6vh;
+  right: 4vw;
+  text-align: right;
+  max-width: 50vw;
+  z-index: 4;
+}
+
+.s3f-t3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.4rem, 2vw, 2.4rem);
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.4;
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.55),
+    0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* ============================================
+   SCENE 3G: HEAVY RAIN & FLOODS
+   ============================================ */
+.s3-rain {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.s3g-storm-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #2a3540 0%, #3d4a55 40%, #4a5560 100%);
+  opacity: 0;
+}
+
+/* Big cloud — center top, extends past screen edge */
+.s3g-big-cloud-wrap {
+  position: absolute;
+  top: -40vh; /* Crop top portion past screen edge */
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(800px, 100vw, 2800px);
+  z-index: 2;
+  pointer-events: none;
+}
+.s3g-big-cloud {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 14px 36px rgba(0, 0, 0, 0.65));
+}
+
+.s3g-cloud-wrap {
+  position: absolute;
+  top: -4vh;
+  right: 0; /* Flush ke kanan screen */
+  width: clamp(320px, 38vw, 640px);
+  z-index: 3;
+}
+.s3g-cloud {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 24px rgba(0,0,0,0.55));
+}
+
+.s3g-rain {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+.rain-drop {
+  position: absolute;
+  width: 2px;
+  height: 30px;
+  background: linear-gradient(to bottom, transparent 0%, rgba(180, 220, 255, 0.9) 100%);
+  border-radius: 1px;
+  opacity: 0;
+}
+
+.s3g-water {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 0;
+  background: linear-gradient(to top,
+    rgba(20, 50, 90, 0.95) 0%,
+    rgba(30, 70, 120, 0.85) 50%,
+    rgba(50, 100, 160, 0.7) 100%);
+  z-index: 5;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Wavy water surface — sits on top of the rising water body */
+.s3g-water-wave {
+  position: absolute;
+  top: -40px;
+  left: -50%;
+  width: 200%;
+  height: 80px;
+  pointer-events: none;
+  will-change: transform;
+  filter: drop-shadow(0 -2px 8px rgba(0, 0, 0, 0.25));
+}
+
+.s3g-title-group {
+  position: absolute;
+  top: 18vh;
+  left: 6vw;
+  text-align: left;
+  max-width: 50vw;
+  z-index: 6;
+}
+.s3g-t1 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 5.5rem);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 1rem;
+  white-space: nowrap;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.7);
+}
+.s3g-t2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.2rem, 1.8vw, 2rem);
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+}
+
+.s3g-bottom-text {
+  position: absolute;
+  bottom: 8vh;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
+}
+.s3g-t3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.3rem, 2vw, 2.2rem);
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.8);
+}
+
+/* ============================================
+   SCENE 3H: STORMS & HURRICANES
+   ============================================ */
+.s3-storms {
+  position: absolute;
+  inset: 0;
+  z-index: 45;
+  pointer-events: none;
+}
+
+.s3h-storm-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #0d141d 0%, #1a2530 50%, #0d141d 100%);
+  opacity: 0;
+}
+
+/* Lightning bolts */
+.s3h-bolt {
+  position: absolute;
+  width: clamp(40px, 5vw, 80px);
+  height: auto;
+  filter: drop-shadow(0 0 20px rgba(255, 235, 80, 0.9));
+  opacity: 0;
+  z-index: 5;
+}
+.bolt-1 { top: 12vh; left: 8vw; transform: rotate(-15deg); }
+.bolt-2 { top: 8vh; right: 10vw; transform: rotate(20deg); }
+.bolt-3 { top: 40vh; left: 12vw; transform: rotate(-8deg); }
+.bolt-4 { top: 35vh; right: 8vw; transform: rotate(15deg); }
+
+/* Wind streaks — subtle motion lines, low opacity */
+.s3h-wind {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  z-index: 4;
+}
+.wind-streak {
+  position: absolute;
+  width: 50vw;
+  height: 24px;
+  left: -55vw;
+  opacity: 0;
+  filter: blur(1.5px);
+}
+.streak-1 { top: 18%; }
+.streak-2 { top: 28%; width: 40vw; }
+.streak-3 { top: 38%; }
+.streak-4 { top: 50%; width: 45vw; }
+.streak-5 { top: 62%; }
+.streak-6 { top: 72%; width: 38vw; }
+.streak-7 { top: 82%; }
+.streak-8 { top: 88%; width: 42vw; }
+
+.s3h-hurricane-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(220px, 28vw, 460px);
+  z-index: 3;
+}
+.s3h-hurricane {
+  display: block;
+  width: 130%;
+  height: auto;
+  filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.55));
+  transform-origin: 50% 50%;
+}
+
+.s3h-title-group {
+  position: absolute;
+  top: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  max-width: 80vw;
+  z-index: 6;
+}
+.s3h-t1 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 5.5rem);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 1rem;
+  white-space: nowrap;
+  text-shadow: 0 4px 18px rgba(0,0,0,0.85);
+}
+.s3h-t2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.2rem, 1.8vw, 2rem);
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+}
+
+.s3h-bottom-text {
+  position: absolute;
+  bottom: 10vh;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 6;
+}
+.s3h-t3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.3rem, 2vw, 2.2rem);
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.85);
+}
+
+/* ============================================
+   SCENE 3I: DISRUPTION OF ECOSYSTEMS
+   ============================================ */
+.s3-ecosystems {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.s3i-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #1a2618 0%, #2a3a25 50%, #1f2e1c 100%);
+  opacity: 0;
+}
+
+.s3i-title-group {
+  position: absolute;
+  top: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  max-width: 85vw;
+  z-index: 6;
+}
+.s3i-t1 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2.2rem, 4.5vw, 5rem);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 1rem;
+  white-space: nowrap;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.8);
+}
+.s3i-t2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.1rem, 1.6vw, 1.9rem);
+  font-weight: 500;
+  color: #d8e8d8;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+  line-height: 1.4;
+}
+
+.s3i-trees {
+  position: absolute;
+  bottom: 16vh;
+  left: 0;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 4vw;
+  z-index: 4;
+}
+.s3i-tree {
+  display: block;
+  width: clamp(140px, 17vw, 280px);
+  height: auto;
+  object-fit: contain;
+  object-position: bottom center;
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55));
+}
+
+.s3i-bottom-text {
+  position: absolute;
+  bottom: 5vh;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 6;
+}
+.s3i-t3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.2rem, 1.8vw, 2rem);
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 4px 14px rgba(0,0,0,0.8);
+  line-height: 1.4;
+}
+
+/* ============================================
+   SCENE 3J: CLOSING
+   ============================================ */
+.s3-closing {
+  position: absolute;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+}
+
+.s3j-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #050810 0%, #0a1020 50%, #050810 100%);
+  opacity: 0;
+}
+
+.s3j-text-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8vw;
+  z-index: 6;
+}
+.s3j-t1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.6rem, 3vw, 3.2rem);
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.5;
+  max-width: 1100px;
+  letter-spacing: 0.01em;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  text-transform: none;
+}
+
+/* ============================================
+   SCENE 4: THE CAUSES — shared styles
+   ============================================ */
+.scene-4 {
+  z-index: 60;
+}
+
+.s4-bg {
+  position: absolute;
+  inset: 0;
+  background: #faf6ed; /* Solid cream base */
+  opacity: 0;
+  z-index: 0;
+}
+
+/* Tall container that GSAP scrolls upward */
+.s4-scroll-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 600vh; /* 6 scenes * 100vh */
+  z-index: 5;
+  will-change: transform;
+}
+
+/* Each sub-scene panel is exactly one viewport tall */
+.s4-panel {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* The master SVG line — spans the entire 600vh stage */
+.s4-master-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.s4-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 10vw;
+  color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+}
+
+.s4-content h2, .s4-content h3 {
+  color: #1a1a1a;
+  text-shadow: none;
+  margin: 0;
+}
+
+.s4-content p {
+  color: #333;
+  text-shadow: none;
+}
+
+.s4-dot {
+  opacity: 0;
+  transform-origin: center;
+}
+
+/* ---- 4A Opening ---- */
+.s4a-content { align-items: center; text-align: center; }
+.s4a-t1 { font-size: clamp(1.8rem, 3.5vw, 4.5rem); margin-bottom: 1.5rem; font-weight: 800; line-height: 1.1; }
+.s4a-t2 { font-size: clamp(1.1rem, 1.8vw, 2.2rem); font-weight: 500; margin-bottom: 1rem; }
+.s4a-human { width: 100px; height: auto; margin-top: 1rem; opacity: 0; }
+
+/* Push tall panels' content to upper half so it sits above the horizontal line (at 60vh).
+   4A (human silhouette) stays centered — unchanged. */
+.s4b-content,
+.s4c-content,
+.s4d-content,
+.s4e-content {
+  align-self: flex-start;
+  margin-top: 0vh;
+}
+
+/* ---- 4B Emissions ---- */
+.s4b-content { align-items: flex-end; text-align: right; padding-right: 8vw; }
+.s4b-t1 { font-size: clamp(2.2rem, 4.5vw, 5rem); font-weight: 900; line-height: 0.9; margin-bottom: 0.8rem; }
+.s4b-t2 { font-size: clamp(1rem, 1.4vw, 1.5rem); max-width: 400px; margin-bottom: 0.8rem; }
+.s4b-t3 { font-size: clamp(1.1rem, 1.5vw, 1.7rem); font-weight: 600; max-width: 600px; margin-bottom: 0; }
+.s4b-scene { display: flex; align-items: flex-end; gap: 4vw; margin-top: 2vh; position: relative; }
+.s4b-icon { height: 140px; width: auto; display: block; object-fit: contain; object-position: bottom; }
+.s4b-smoke { position: absolute; width: 20px; height: 20px; border-radius: 50%; background: #999; opacity: 0; }
+
+/* ---- 4C Deforestation ---- */
+.s4c-panel { overflow: visible; }
+.s4c-content { align-items: flex-start; text-align: left; padding-left: 8vw; margin-top: -15vh; }
+.s4c-t1 { font-size: clamp(2.2rem, 4.5vw, 5rem); font-weight: 900; margin-bottom: 0.8rem; }
+.s4c-t2, .s4c-t3 { font-size: clamp(1rem, 1.4vw, 1.5rem); max-width: 500px; margin-bottom: 0.6rem; }
+.s4c-stage { position: relative; width: 100%; height: 140px; margin-top: 1.5vh; }
+.s4c-trees, .s4c-buildings {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 0;
+  align-items: flex-end;
+  justify-content: center;
+}
+.s4c-tree, .s4c-building { height: 140px; width: auto; display: block; object-fit: contain; object-position: bottom; }
+.s4c-building { opacity: 0; }
+
+/* ---- 4D Urban & Industrial ---- */
+.s4d-content { align-items: flex-end; text-align: right; padding-right: 8vw; }
+.s4d-t1 { font-size: clamp(1.8rem, 4vw, 4.5rem); margin-bottom: 0.8rem; }
+.s4d-t2 { font-size: clamp(1rem, 1.4vw, 1.5rem); margin-bottom: 0.3rem; }
+.s4d-content .s4d-t3 { font-size: clamp(1rem, 1.4vw, 1.5rem); margin-bottom: 0.3rem; color: #c0392b; font-weight: 600; }
+.s4d-skyline {
+  display: flex;
+  gap: 0;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2vh;
+}
+.s4d-building { height: 140px; width: auto; display: block; object-fit: contain; object-position: bottom; }
+
+/* ---- 4E Everyday Lifestyle ---- */
+.s4e-content { align-items: flex-start; text-align: left; padding-left: 8vw; }
+.s4e-t1 { font-size: clamp(2rem, 4vw, 4.5rem); margin-bottom: 0.4rem; }
+.s4e-t2 { font-size: clamp(1rem, 1.5vw, 1.7rem); margin-bottom: 1rem; font-weight: 600; }
+.s4e-icons { display: flex; gap: 3vw; margin-bottom: 1rem; }
+.s4e-icon { height: 50px; width: auto; }
+.s4e-list p { font-size: clamp(1rem, 1.3vw, 1.4rem); margin-bottom: 0.3rem; font-weight: 500; }
+
+/* ---- 4F Closing ---- */
+.s4f-panel { overflow: visible; }
+.s4f-content { align-items: center; text-align: center; align-self: flex-start; margin-top: -20vh; }
+.s4f-t1 { font-size: clamp(1.8rem, 3vw, 3.5rem); margin-bottom: 1.5rem; text-transform: none; }
+.s4f-t2 {
+  font-size: clamp(1.2rem, 2vw, 2.2rem);
+  font-weight: 500;
+  margin-top: 42vh;
+  background: #faf6ed;
+  padding: 0.5rem 1.2rem;
+  display: inline-block;
+  align-self: center;
+  position: relative;
+  z-index: 5;
+}
+
+/* ============================================ */
+/* SCENE 5: WHAT WE CAN DO                      */
+/* ============================================ */
+.scene-5 { z-index: 70; }
+.s5-bg {
+  position: absolute;
+  inset: 0;
+  background: #1a1a1a;
+  opacity: 0;
+}
+.s5-scroll-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 500vh;
+  will-change: transform;
+}
+.s5-panel {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+.s5-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 8vw;
+  color: #faf6ed;
+  display: flex;
+  flex-direction: column;
+}
+.s5-content h2, .s5-content h1 { color: #faf6ed; text-shadow: none; margin: 0; }
+.s5-content p { color: #d4cfc0; text-shadow: none; }
+
+/* ---- 5A Opening ---- */
+.s5a-content { align-items: center; text-align: center; gap: 3rem; }
+.s5a-t1, .s5a-t2 {
+  font-size: clamp(1.1rem, 1.8vw, 2rem);
+  font-weight: 500;
+}
+.s5a-t3 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2.5rem, 7vw, 6rem);
+  color: rgba(250, 246, 237, 0.3);
+  letter-spacing: -0.02em;
+  text-align: center;
+  line-height: 1;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.s5a-enter-hint {
+  position: fixed;
+  left: 50%;
+  bottom: 8vh;
+  transform: translateX(-50%);
+  z-index: 9000;
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(0.8rem, 1vw, 1rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(212, 207, 192, 0.85);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  pointer-events: none;
+  opacity: 0;
+  white-space: nowrap;
+  animation: s5aHintPulse 2.2s ease-in-out infinite;
+}
+.s5a-enter-hint kbd {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 0.85em;
+  letter-spacing: 0.05em;
+  padding: 0.25em 0.7em;
+  border: 1px solid rgba(250, 246, 237, 0.55);
+  border-radius: 0.35em;
+  color: #faf6ed;
+  background: rgba(250, 246, 237, 0.08);
+  box-shadow: 0 1px 0 rgba(250, 246, 237, 0.2) inset;
+}
+@keyframes s5aHintPulse {
+  0%, 100% { filter: brightness(0.85); }
+  50%      { filter: brightness(1.25); }
+}
+
+/* ---- Window-open transition shutters (Scene 5A → 5B) ---- */
+.window-shutter {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  pointer-events: none;
+  visibility: hidden;
+}
+.window-shutter-panel {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 51%;
+  background: #050505;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+}
+.window-shutter-top {
+  top: 0;
+  transform: translateY(-100%);
+}
+.window-shutter-bottom {
+  bottom: 0;
+  transform: translateY(100%);
+}
+
+/* ---- 5B Energy Usage ---- */
+.s5b-content { align-items: center; text-align: center; }
+.s5b-bulb { width: 110px; height: auto; margin-bottom: 1.5rem; }
+.s5b-t1 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 900;
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.02em;
+}
+.s5b-st1 { font-size: clamp(1rem, 1.5vw, 1.6rem); margin-bottom: 3rem; }
+.s5b-icons {
+  display: flex;
+  gap: 5vw;
+  justify-content: center;
+  align-items: flex-start;
+}
+.s5b-icons { pointer-events: auto; }
+.s5b-item {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: inherit;
+  color: inherit;
+  padding: 1rem;
+  transition: transform 0.3s ease;
+  max-width: 220px;
+  pointer-events: auto;
+}
+.s5b-item:hover { transform: translateY(-6px); }
+.s5b-item:focus { outline: none; }
+.s5b-icon { width: 70px; height: auto; margin-bottom: 1rem; }
+.s5b-item p {
+  opacity: 0;
+  font-size: clamp(0.85rem, 1.1vw, 1.05rem);
+  font-weight: 500;
+  transition: opacity 0.6s ease;
+  text-align: center;
+}
+.s5b-item.revealed p { opacity: 1; }
+.s5b-hint {
+  margin-top: 2.5rem;
+  font-size: 0.85rem;
+  color: #888;
+  font-style: italic;
+  transition: opacity 0.6s ease;
+}
+.s5b-hint.hide { opacity: 0; }
+
+/* ---- 5C Transport ---- */
+.s5c-content { align-items: center; text-align: center; }
+.s5c-t1 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 900;
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.02em;
+}
+.s5c-st1 { font-size: clamp(1.1rem, 1.7vw, 1.7rem); font-weight: 600; margin-bottom: 0.5rem; }
+.s5c-st2 { font-size: clamp(1rem, 1.4vw, 1.4rem); margin-bottom: 3rem; line-height: 1.5; }
+.s5c-stage {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  height: 100px;
+  margin: 0 auto;
+}
+.s5c-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: #faf6ed;
+  transform-origin: left center;
+}
+.s5c-vehicle {
+  position: absolute;
+  bottom: 3px;
+  height: 70px;
+  width: auto;
+}
+/* Equal center-to-center spacing across the stage (16.66 / 50 / 83.33).
+   Pair with xPercent: -50 in JS so each image is centered on its anchor. */
+.s5c-train   { left: 16.66%; }
+.s5c-walker  { left: 50%;    height: 80px; transform-origin: center bottom; }
+.s5c-bicycle { left: 83.33%; }
+
+/* ---- 5D Sustainable Choices ---- */
+.s5d-content {
+  flex-direction: row;
+  align-items: center;
+  gap: 5vw;
+}
+.s5d-icons {
+  --s5d-icon-width: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+.s5d-icon {
+  width: var(--s5d-icon-width);
+  min-width: var(--s5d-icon-width);
+  max-width: var(--s5d-icon-width);
+  height: auto;
+  display: block;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+.s5d-bottle {
+  width: 68px;
+  min-width: 68px;
+  max-width: 68px;
+}
+.s5d-text { flex: 1; text-align: left; }
+.s5d-t1 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 3.5rem);
+  font-weight: 900;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+.s5d-text p {
+  font-size: clamp(0.95rem, 1.3vw, 1.3rem);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+/* ---- 5E Closing ---- */
+.s5e-content { align-items: center; text-align: center; gap: 1.5rem; }
+.s5e-t1 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1.5rem, 2.8vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.s5e-handshake {
+  width: 130px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+.s5e-t2, .s5e-t3 {
+  font-size: clamp(1.1rem, 1.7vw, 1.7rem);
+  font-weight: 600;
+}
+
+/* ============================================ */
+/* SCENE 6: CALL TO ACTION                      */
+/* ============================================ */
+.scene-6 { z-index: 80; }
+.s6-bg {
+  position: absolute;
+  inset: 0;
+  background: #faf6ed;
+  opacity: 0;
+}
+.s6-phase {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.s6-content {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  min-height: 78vh;
+  padding: 0 5vw;
+  text-align: center;
+  color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Phase 1 */
+.s6-t1 {
+  position: absolute;
+  top: 5vh;
+  left: 50%;
+  width: min(980px, 90vw);
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1.6rem, 3.4vw, 3rem);
+  font-weight: 700;
+  margin-bottom: 2rem;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  line-height: 1.12;
+  max-width: 980px;
+  transform: translateX(-50%);
+  will-change: transform, opacity, filter;
+}
+.reality-word {
+  font-weight: 900;
+  font-size: clamp(4rem, 8vw, 7rem);
+  color: #1a1a1a;
+  display: block;
+  letter-spacing: 0.02em;
+  transform-origin: center;
+  line-height: 0.95;
+  will-change: transform, opacity, filter;
+}
+.s6-t2, .s6-t3 {
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  font-weight: 600;
+  color: #333;
+  line-height: 1.35;
+  max-width: 620px;
+}
+.s6-t2 {
+  margin: 0 0 1rem;
+}
+.s6-t3 {
+  margin: 1rem 0 0;
+}
+.s6-slider {
+  position: relative;
+  width: 85%;
+  max-width: 800px;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+.s6-slider-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.s6-slider-after-wrap {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 100% 0 0);
+}
+.s6-slider-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #fff;
+  left: 0%;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+/* Phase 2 — CTA */
+.s6-cta-content { gap: 0.5rem; }
+.s6-cta-t1, .s6-cta-t2 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1.4rem, 2.6vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  margin: 0;
+}
+.s6-cta-us {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(5rem, 14vw, 14rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  margin: 1.5rem 0 2.5rem;
+  background: linear-gradient(135deg, #1a1a1a 0%, #555 60%, #1a1a1a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+.cta-button {
+  background: transparent;
+  color: #1a1a1a;
+  padding: 1.1rem 2.8rem;
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  font-weight: 600;
+  font-family: inherit;
+  border: 2px solid #1a1a1a;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  letter-spacing: 0.02em;
+}
+.cta-button:hover {
+  background: #1a1a1a;
+  color: #faf6ed;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+.cta-button:focus { outline: 2px solid #1a1a1a; outline-offset: 4px; }
+
+/* Final CTA stencil fill + border draw */
+.s6-cta-content { gap: 2.8rem; }
+.s6-final-line {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1.85rem, 4.2vw, 4.8rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  max-width: 1080px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.18em 0.28em;
+  margin: 0;
+}
+.s6-stencil {
+  color: transparent;
+  -webkit-text-stroke: 1.2px rgba(26, 26, 26, 0.82);
+  background: linear-gradient(#1a1a1a, #1a1a1a) left center / 0% 100% no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  will-change: background-size, opacity, transform;
+}
+.s6-us-highlight {
+  -webkit-text-stroke-color: rgba(14, 165, 233, 0.95);
+  background-image: linear-gradient(135deg, #0ea5e9 0%, #16a34a 48%, #f59e0b 100%);
+  display: block;
+  flex-basis: 100%;
+  font-size: clamp(5.5rem, 15vw, 14rem);
+  line-height: 0.85;
+  margin-top: 0.08em;
+  filter: drop-shadow(0 14px 24px rgba(14, 165, 233, 0.18));
+  transform-origin: center;
+}
+.cta-button {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  background: transparent;
+  pointer-events: auto;
+  border-color: rgba(26, 26, 26, 0.22);
+  box-shadow: 0 10px 26px rgba(26, 26, 26, 0.06);
+  transition: color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.cta-button::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background:
+    linear-gradient(#1a1a1a, #1a1a1a) left top / 0 2px no-repeat,
+    linear-gradient(#1a1a1a, #1a1a1a) right top / 2px 0 no-repeat,
+    linear-gradient(#1a1a1a, #1a1a1a) right bottom / 0 2px no-repeat,
+    linear-gradient(#1a1a1a, #1a1a1a) left bottom / 2px 0 no-repeat;
+  pointer-events: none;
+  transition: background-size 0.45s ease;
+  z-index: 1;
+}
+.cta-button::after {
+  display: none;
+}
+.cta-button:hover::before {
+  background-size:
+    100% 2px,
+    2px 100%,
+    100% 2px,
+    2px 100%;
+}
+.cta-button:hover {
+  background: transparent;
+  color: #1a1a1a;
+  transform: translateY(-3px);
+  border-color: #1a1a1a;
+  box-shadow: 0 16px 34px rgba(26, 26, 26, 0.12);
+}
+
+.s2-main-layer {
+  z-index: 25;
+}
+
+.window-wall-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20; /* Above iceberg, below Text 2 & 3 */
+  pointer-events: none;
+}
+
+.window-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Fit the window frame nicely */
+}

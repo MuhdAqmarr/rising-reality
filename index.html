@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A Rising Reality | Scrollytelling Experience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <!-- SVG Filter Defs (hidden, used by CSS filter url()) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <filter id="heat-wave" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.035" numOctaves="2" seed="1" result="noise"/>
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="18" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+      </defs>
+    </svg>
+
+    <!-- The Master Scrubber Container: this creates the scroll height -->
+    <div class="scroll-container"></div>
+
+    <!-- The Camera: Fixed viewport that shows the current state -->
+    <main class="camera">
+      
+      <!-- SCENE 1: TITLE INTRO -->
+      <section class="scene scene-1 is-active">
+        <!-- Background Layer -->
+        <div class="layer bg-layer">
+          <div class="iceberg-bg"></div>
+        </div>
+
+        <!-- The Cinematic Window Overlay (hidden initially, appears during scroll) -->
+        <div class="window-wall-overlay">
+          <img src="/window_frame.png" class="window-image" alt="Window Frame">
+        </div>
+        
+        <!-- Text Layer -->
+        <div class="layer text-layer flex-center">
+          <div class="title-container flex-row">
+            <h1 class="hero-title part-1">A RISING</h1>
+            <h1 class="hero-title part-2">REALITY</h1>
+          </div>
+          <div class="subtitle-wrapper">
+            <p class="hero-subtitle">
+              Climate change is no longer a distant possibility.<br/>
+              It is a reality unfolding around us.
+            </p>
+          </div>
+        </div>
+
+        <!-- UI Layer -->
+        <div class="layer ui-layer flex-bottom">
+          <div class="scroll-cue">
+            <p>Scroll to explore how this global issue is closer than we think.</p>
+            <div class="arrow-down"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCENE 2: THE PROBLEM -->
+      <section class="scene scene-2">
+        <!-- Text 1 (Centered, appears early) -->
+        <div class="layer text-layer flex-center" style="z-index: 10">
+          <h2 class="s2-text t1">Climate change feels far away.</h2>
+        </div>
+
+        <!-- 3-Column Layout for Text 2 & 3 -->
+        <div class="layer text-layer flex-center" style="z-index: 30">
+          <div class="s2-grid">
+            <!-- Left Text -->
+            <div class="s2-col left">
+              <p class="s2-text t2">It feels like something happening somewhere else.</p>
+            </div>
+            
+            <!-- Center is empty, window is behind this layer -->
+            <div class="s2-col center"></div>
+            
+            <!-- Right Text -->
+            <div class="s2-col right">
+              <div class="s2-text t3">
+                <p>In another country.</p>
+                <p>In another time.</p>
+                <p>To other people.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text 4 (Final question, ascends from bottom) -->
+        <div class="layer text-layer flex-center" style="z-index: 40">
+          <h2 class="s2-text t4">But what if it isn't?</h2>
+        </div>
+      </section>
+
+      <!-- SCENE 3: BRINGING THE ISSUE CLOSER -->
+      <section class="scene scene-3">
+        <!-- Background Video -->
+        <div class="layer bg-layer">
+          <video class="globe-video" src="/globe_space.mp4" muted loop playsinline autoplay preload="auto"></video>
+        </div>
+        
+        <!-- 3A: Opening -->
+        <div class="layer text-layer flex-center s3-opening" style="z-index: 10">
+          <h2 class="s3a-t1">Climate change is no longer just a distant headline.</h2>
+          <p class="s3a-t2">Its effects are becoming more visible across the world.</p>
+        </div>
+        
+        <!-- 3B: Rising Temperatures -->
+        <div class="layer text-layer flex-center s3-temps">
+          <div class="heat-glow"></div>
+          <img src="/world.svg" alt="World Map" class="s3b-map">
+          
+          <div class="s3b-content-wrapper">
+            <div class="s3b-text-group">
+              <h2 class="s3b-t1">The earth is getting warmer</h2>
+              <p class="s3b-t2">Global temperatures are rising year by year.</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Persistent Thermometer -->
+        <img src="/termometer_burned.png" alt="Burning Thermometer" class="s3b-thermometer">
+
+        <!-- 3C: Ice Melting -->
+        <div class="layer bg-layer s3-melting-bg">
+          <img src="/iceberg_bg.png" alt="Melting Iceberg" class="iceberg-image">
+        </div>
+        <div class="layer s3-melting">
+          <!-- Left side text (above thermometer) -->
+          <div class="s3c-left">
+            <h2 class="s3c-t1">As temperatures rise, ice<br>begins to melt.</h2>
+          </div>
+          
+          <!-- Right side (Text 2) -->
+          <div class="s3c-right">
+            <p class="s3c-t2">Glaciers shrink, and more<br>water flows into the oceans.</p>
+          </div>
+          
+          <!-- Bottom text -->
+          <div class="s3c-bottom">
+            <p class="s3c-t3">Over time, sea levels rise, increasing the risk of coastal flooding.</p>
+          </div>
+        </div>
+
+        <!-- 3D: Diving Transition -->
+        <div class="layer bg-layer s3-ocean-bg">
+          <img src="/ocean.png" alt="Deep Ocean" class="ocean-image">
+        </div>
+        <div class="layer s3-diving">
+          <div class="s3d-content flex-center" style="flex-direction: column;">
+            <h2 class="s3d-t1">These changes do not happen alone.</h2>
+            
+            <div class="s3d-waves">
+              <svg viewBox="0 0 100 20" preserveAspectRatio="none" class="wave-svg">
+                <path d="M0 10 Q 12.5 0, 25 10 T 50 10" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" />
+              </svg>
+              <div class="wave-gap"></div>
+              <svg viewBox="0 0 100 20" preserveAspectRatio="none" class="wave-svg">
+                <path d="M50 10 Q 62.5 0, 75 10 T 100 10" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" />
+              </svg>
+            </div>
+            
+            <p class="s3d-t2">They affect the way our climate behaves.</p>
+          </div>
+        </div>
+        <!-- 3E: Heatwaves -->
+        <div class="layer s3e-warm-bg">
+          <div class="paint-blob blob-1"></div>
+          <div class="paint-blob blob-2"></div>
+          <div class="paint-blob blob-3"></div>
+          <div class="paint-blob blob-4"></div>
+          <div class="paint-blob blob-5"></div>
+          <div class="paint-blob blob-6"></div>
+          <div class="heat-shimmer"></div>
+          <div class="heat-wave-distort"></div>
+        </div>
+        <div class="layer s3-heatwave">
+          <div class="s3e-sun-wrap">
+            <div class="s3e-sun-glow"></div>
+            <img src="/sun.png" alt="Sun" class="s3e-sun" />
+          </div>
+          <div class="s3e-text-group">
+            <h2 class="s3e-t1">HEATWAVES</h2>
+            <p class="s3e-t2">Higher temperatures make<br>heatwaves more intense,<br>frequent, and longer-lasting.</p>
+          </div>
+        </div>
+
+        <!-- 3F: Droughts & Wildfires -->
+        <div class="layer s3-droughts">
+          <!-- Parched ground background -->
+          <div class="s3f-ground"></div>
+
+          <!-- Title + Subtext 1 (top-right) -->
+          <div class="s3f-title-group">
+            <h2 class="s3f-t1">DROUGHTS &amp; WILDFIRES</h2>
+            <p class="s3f-t2">More heat increases evaporation.</p>
+          </div>
+
+          <!-- Leafless trees (bottom row) -->
+          <div class="s3f-trees">
+            <img src="/Pokok1.png" alt="Leafless Tree" class="s3f-tree tree-1" />
+            <img src="/Pokok2.png" alt="Leafless Tree" class="s3f-tree tree-2" />
+            <img src="/Pokok3.png" alt="Leafless Tree" class="s3f-tree tree-3" />
+          </div>
+
+          <!-- Subtext 2 (bottom-right) -->
+          <div class="s3f-bottom-text">
+            <p class="s3f-t3">Land becomes drier, creating conditions<br>for droughts and wildfires.</p>
+          </div>
+        </div>
+
+        <!-- 3G: Heavy Rain & Floods -->
+        <div class="layer s3-rain">
+          <div class="s3g-storm-bg"></div>
+
+          <!-- Big cloud center, flush ke atas (terpotong) -->
+          <div class="s3g-big-cloud-wrap">
+            <img src="/big_cloud_storm.png" alt="" class="s3g-big-cloud" />
+          </div>
+
+          <!-- Smaller side cloud (right edge) -->
+          <div class="s3g-cloud-wrap">
+            <img src="/cloud_storm.png" alt="Storm Cloud" class="s3g-cloud" />
+          </div>
+
+          <!-- Rain drops container — populated by JS -->
+          <div class="s3g-rain"></div>
+
+          <!-- Rising water dengan wavy surface -->
+          <div class="s3g-water">
+            <svg class="s3g-water-wave" viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0,50 Q120,10 240,50 T480,50 T720,50 T960,50 T1200,50 T1440,50 L1440,100 L0,100 Z"
+                    fill="rgba(50,100,160,0.85)"/>
+              <path d="M0,55 Q120,20 240,55 T480,55 T720,55 T960,55 T1200,55 T1440,55 L1440,100 L0,100 Z"
+                    fill="rgba(30,70,120,0.95)"/>
+            </svg>
+          </div>
+
+          <!-- Title + Subtext 1 (top-left) -->
+          <div class="s3g-title-group">
+            <h2 class="s3g-t1">HEAVY RAIN &amp; FLOODS</h2>
+            <p class="s3g-t2">A warmer atmosphere holds<br>more moisture.</p>
+          </div>
+
+          <!-- Bottom text -->
+          <div class="s3g-bottom-text">
+            <p class="s3g-t3">This leads to heavier rainfall and increased flooding.</p>
+          </div>
+        </div>
+
+        <!-- 3H: Storms & Hurricanes -->
+        <div class="layer s3-storms">
+          <div class="s3h-storm-bg"></div>
+
+          <!-- Lightning bolts scattered -->
+          <svg class="s3h-bolt bolt-1" viewBox="0 0 30 60" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 0 L4 30 L13 30 L8 60 L24 25 L14 25 L20 0 Z" fill="#ffe24a" stroke="#ff9b1a" stroke-width="1.2"/>
+          </svg>
+          <svg class="s3h-bolt bolt-2" viewBox="0 0 30 60" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 0 L4 30 L13 30 L8 60 L24 25 L14 25 L20 0 Z" fill="#ffe24a" stroke="#ff9b1a" stroke-width="1.2"/>
+          </svg>
+          <svg class="s3h-bolt bolt-3" viewBox="0 0 30 60" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 0 L4 30 L13 30 L8 60 L24 25 L14 25 L20 0 Z" fill="#ffe24a" stroke="#ff9b1a" stroke-width="1.2"/>
+          </svg>
+          <svg class="s3h-bolt bolt-4" viewBox="0 0 30 60" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 0 L4 30 L13 30 L8 60 L24 25 L14 25 L20 0 Z" fill="#ffe24a" stroke="#ff9b1a" stroke-width="1.2"/>
+          </svg>
+
+          <!-- Wind streaks (subtle, gives sense of motion) -->
+          <div class="s3h-wind">
+            <svg class="wind-streak streak-1" viewBox="0 0 200 20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 10 Q 40 2 80 10 T 160 10 T 200 10" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+            <svg class="wind-streak streak-2" viewBox="0 0 200 20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 10 Q 35 16 70 10 T 140 10 T 200 10" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.9" stroke-linecap="round"/>
+            </svg>
+            <svg class="wind-streak streak-3" viewBox="0 0 200 20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 10 Q 40 5 80 10 T 160 10 T 200 10" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+            <svg class="wind-streak streak-4" viewBox="0 0 200 20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 10 Q 30 14 60 10 T 120 10 T 200 10" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.8" stroke-linecap="round"/>
+            </svg>
+            <svg class="wind-streak streak-5" viewBox="0 0 200 20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 10 Q 45 4 90 10 T 180 10 T 200 10" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+            <svg class="wind-streak streak-6" viewBox="0 0 200 20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 10 Q 35 15 70 10 T 140 10 T 200 10" fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="0.9" stroke-linecap="round"/>
+            </svg>
+            <svg class="wind-streak streak-7" viewBox="0 0 200 20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 10 Q 40 6 80 10 T 160 10 T 200 10" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+            <svg class="wind-streak streak-8" viewBox="0 0 200 20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 10 Q 30 12 60 10 T 120 10 T 200 10" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="0.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <!-- Hurricane GIF -->
+          <div class="s3h-hurricane-wrap">
+            <img src="/hurricane.gif" alt="Hurricane" class="s3h-hurricane" />
+          </div>
+
+          <!-- Title + subtext 1 -->
+          <div class="s3h-title-group">
+            <h2 class="s3h-t1">STORMS &amp; HURRICANES</h2>
+            <p class="s3h-t2">Warmer oceans provide more<br>energy to storms.</p>
+          </div>
+
+          <!-- Bottom text -->
+          <div class="s3h-bottom-text">
+            <p class="s3h-t3">This can make them more powerful and destructive.</p>
+          </div>
+        </div>
+
+        <!-- 3I: Disruption of Ecosystems -->
+        <div class="layer s3-ecosystems">
+          <div class="s3i-bg"></div>
+
+          <!-- Title (top center) -->
+          <div class="s3i-title-group">
+            <h2 class="s3i-t1">DISRUPTION OF ECOSYSTEMS</h2>
+            <p class="s3i-t2">Rapid environmental changes outpace<br>the ability of many species to adapt.</p>
+          </div>
+
+          <!-- Row of leafy trees (forest) -->
+          <div class="s3i-trees">
+            <img src="/Pokok_Berdaun_1.png" alt="Tree" class="s3i-tree" />
+            <img src="/Pokok_Berdaun_2.png" alt="Tree" class="s3i-tree" />
+            <img src="/Pokok_Berdaun_3.png" alt="Tree" class="s3i-tree" />
+            <img src="/Pokok_Berdaun_4.png" alt="Tree" class="s3i-tree" />
+          </div>
+
+          <!-- Bottom text -->
+          <div class="s3i-bottom-text">
+            <p class="s3i-t3">Forests shrink, habitats disappear,<br>and some species face extinction.</p>
+          </div>
+        </div>
+
+        <!-- 3J: Closing -->
+        <div class="layer s3-closing">
+          <div class="s3j-bg"></div>
+          <div class="s3j-text-wrap">
+            <h2 class="s3j-t1">What once seemed like distant events are becoming part of our shared reality.</h2>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SCENE 4: THE CAUSES                          -->
+      <!-- 6 sub-scenes (4A → 4F) with continuous       -->
+      <!-- "timeline line" frame drawing across each.   -->
+      <!-- ============================================ -->
+      <section class="scene scene-4">
+        <!-- Fixed cream background — stays put, content travels -->
+        <div class="layer s4-bg"></div>
+
+        <!-- s4-scroll-stage: tall element that GSAP scrolls upward via y -->
+        <div class="s4-scroll-stage" id="s4-scroll-stage">
+
+          <!-- The master SVG line — tall, covers all 6 scenes -->
+          <svg id="s4-master-svg" class="s4-master-svg" viewBox="-50 0 1100 6000" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- 
+              Corrected Path: Serpentine zigzag across 6000 units.
+              Each scene gets 1000 units of vertical space.
+            -->
+            
+            
+            <path id="s4-line-path"
+              d="
+                M 530 640
+                L 900 640 Q 1000 640 1000 740
+                L 1000 1300
+                Q 1000 1400 900 1400 L 100 1400 Q 0 1400 0 1500
+                L 0 2300
+                Q 0 2400 100 2400 L 900 2400 Q 1000 2400 1000 2500
+                L 1000 3300
+                Q 1000 3400 900 3400 L 100 3400 Q 0 3400 0 3500
+                L 0 4300
+                Q 0 4400 100 4400 L 900 4400 Q 1000 4400 1000 4500
+                L 1000 4900
+                Q 1000 5000 900 5000 L 500 5000 Q 500 5100 500 5200
+                L 500 5500
+              "
+              fill="none"
+              stroke="#1a1a1a"
+              stroke-width="12"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              vector-effect="non-scaling-stroke"
+            />
+
+            <!-- Dots at the center of each panel (approx) -->
+            <circle class="s4-dot dot-a" cx="530" cy="640" r="20" fill="#1a1a1a"/>
+            <circle class="s4-dot dot-b" cx="1000" cy="1500" r="20" fill="#1a1a1a"/>
+            <circle class="s4-dot dot-c" cx="0" cy="2500" r="20" fill="#1a1a1a"/>
+            <circle class="s4-dot dot-d" cx="1000" cy="3500" r="20" fill="#1a1a1a"/>
+            <circle class="s4-dot dot-e" cx="0" cy="4500" r="20" fill="#1a1a1a"/>
+            <circle class="s4-dot dot-f" cx="500" cy="5500" r="20" fill="#1a1a1a"/>
+          </svg>
+
+          <!-- ===== CONTENT BLOCKS — stacked vertically, each 100vh tall ===== -->
+
+          <!-- 4A: Opening -->
+          <div class="s4-panel s4a-panel">
+            <div class="s4-content s4a-content">
+              <h2 class="s4a-t1">Climate change does not happen on its own.</h2>
+              <p class="s4a-t2">It is driven by human activities.</p>
+              <svg class="s4a-human" viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="30" r="18" fill="#1a1a1a"/>
+                <path d="M 50 50 L 50 130 M 50 70 L 20 100 M 50 70 L 80 100 M 50 130 L 25 190 M 50 130 L 75 190"
+                      stroke="#1a1a1a" stroke-width="10" stroke-linecap="round" fill="none"/>
+              </svg>
+
+              
+            </div>
+          </div>
+
+          <!-- 4B: Emissions -->
+          <div class="s4-panel s4b-panel">
+            <div class="s4-content s4b-content">
+              <h2 class="s4b-t1">EMISSIONS</h2>
+              <p class="s4b-t2">This releases gases into the air that<br>trap heat in the atmosphere.</p>
+              <p class="s4b-t3">We burn fossil fuels like coal, oil,<br>and gas to power our homes, cars, and industries.</p>
+              <div class="s4b-scene">
+                <img src="/factory.png" alt="Factory" class="s4b-icon s4b-factory" />
+                <img src="/house.png" alt="House" class="s4b-icon s4b-house" />
+                <img src="/car.png" alt="Car" class="s4b-icon s4b-car" />
+                <div class="s4b-smoke smoke-1"></div>
+                <div class="s4b-smoke smoke-2"></div>
+                <div class="s4b-smoke smoke-3"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4C: Deforestation -->
+          <div class="s4-panel s4c-panel">
+            <div class="s4-content s4c-content">
+              <h2 class="s4c-t1">DEFORESTATION</h2>
+              <p class="s4c-t2">Forests are cleared for development.</p>
+              <p class="s4c-t3">Fewer trees mean less carbon is absorbed.</p>
+              <div class="s4c-stage">
+                <div class="s4c-trees">
+                  <img src="/Pokok_Berdaun_1.png" alt="Tree" class="s4c-tree" />
+                  <img src="/Pokok_Berdaun_2.png" alt="Tree" class="s4c-tree" />
+                  <img src="/Pokok_Berdaun_3.png" alt="Tree" class="s4c-tree" />
+                  <img src="/Pokok_Berdaun_4.png" alt="Tree" class="s4c-tree" />
+                  <img src="/Pokok_Berdaun_1.png" alt="Tree" class="s4c-tree" />
+                  <img src="/Pokok_Berdaun_2.png" alt="Tree" class="s4c-tree" />
+                  <img src="/Pokok_Berdaun_3.png" alt="Tree" class="s4c-tree" />
+                  <img src="/Pokok_Berdaun_4.png" alt="Tree" class="s4c-tree" />
+                </div>
+                <div class="s4c-buildings">
+                  <img src="/building1.png" alt="Building" class="s4c-building" />
+                  <img src="/building2.png" alt="Building" class="s4c-building" />
+                  <img src="/building3.PNG" alt="Building" class="s4c-building" />
+                  <img src="/building1.png" alt="Building" class="s4c-building" />
+                  <img src="/building2.png" alt="Building" class="s4c-building" />
+                  <img src="/building3.PNG" alt="Building" class="s4c-building" />
+                  <img src="/building1.png" alt="Building" class="s4c-building" />
+                  <img src="/building2.png" alt="Building" class="s4c-building" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4D: Urban & Industrial Growth -->
+          <div class="s4-panel s4d-panel">
+            <div class="s4-content s4d-content">
+              <h2 class="s4d-t1">URBAN &amp; INDUSTRIAL GROWTH</h2>
+              <p class="s4d-t2">Rapid urbanization and industrial activities</p>
+              <p class="s4d-t3">increase energy demand and emissions.</p>
+              <div class="s4d-skyline">
+                <img src="/building1.png" alt="Building" class="s4d-building" />
+                <img src="/building2.png" alt="Building" class="s4d-building" />
+                <img src="/building3.PNG" alt="Building" class="s4d-building" />
+                <img src="/building1.png" alt="Building" class="s4d-building" />
+                <img src="/building2.png" alt="Building" class="s4d-building" />
+                <img src="/building3.PNG" alt="Building" class="s4d-building" />
+                <img src="/building1.png" alt="Building" class="s4d-building" />
+                <img src="/building2.png" alt="Building" class="s4d-building" />
+              </div>
+            </div>
+          </div>
+
+          <!-- 4E: Our Everyday Lifestyle -->
+          <div class="s4-panel s4e-panel">
+            <div class="s4-content s4e-content">
+              <h2 class="s4e-t1">OUR EVERYDAY LIFESTYLE</h2>
+              <p class="s4e-t2">also play a role</p>
+              <div class="s4e-icons">
+                <svg class="s4e-icon" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 35 5 L 15 45 L 30 45 L 22 75 L 45 30 L 30 30 L 38 5 Z" fill="#1a1a1a"/>
+                </svg>
+                <svg class="s4e-icon" viewBox="0 0 80 60" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 8 40 L 18 40 L 25 22 L 60 22 L 67 40 L 75 40 L 75 50 L 8 50 Z" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+                  <circle cx="25" cy="52" r="7" fill="#1a1a1a"/>
+                  <circle cx="60" cy="52" r="7" fill="#1a1a1a"/>
+                </svg>
+                <svg class="s4e-icon" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 12 20 L 12 70 Q 12 75 17 75 L 43 75 Q 48 75 48 70 L 48 20 Z" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+                  <path d="M 12 20 L 48 20 L 42 8 L 18 8 Z" fill="#1a1a1a"/>
+                </svg>
+                <svg class="s4e-icon" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="8" y="20" width="44" height="55" rx="3" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+                  <line x1="5" y1="15" x2="55" y2="15" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+                  <line x1="20" y1="10" x2="40" y2="10" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>
+                  <line x1="20" y1="32" x2="20" y2="65" stroke="#faf6ed" stroke-width="2.5"/>
+                  <line x1="30" y1="32" x2="30" y2="65" stroke="#faf6ed" stroke-width="2.5"/>
+                  <line x1="40" y1="32" x2="40" y2="65" stroke="#faf6ed" stroke-width="2.5"/>
+                </svg>
+              </div>
+              <div class="s4e-list">
+                <p>The energy we use.</p>
+                <p>The way we travel.</p>
+                <p>The things we consume.</p>
+                <p>The waste we produce.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4F: Closing -->
+          <div class="s4-panel s4f-panel">
+            <div class="s4-content s4f-content">
+              <h3 class="s4f-t1">These actions are all connected</h3>
+              <p class="s4f-t2">Together, they contribute to a warming planet.</p>
+            </div>
+          </div>
+
+        </div><!-- end s4-scroll-stage -->
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SCENE 5: WHAT WE CAN DO                     -->
+      <!-- 5 sub-scenes (5A → 5E)                       -->
+      <!-- ============================================ -->
+      <section class="scene scene-5">
+        <div class="layer s5-bg"></div>
+
+        <div class="s5-scroll-stage" id="s5-scroll-stage">
+
+          <!-- 5A: Opening -->
+          <div class="s5-panel s5a-panel">
+            <div class="s5-content s5a-content">
+              <p class="s5a-t1">If human actions contribute to the problem,</p>
+              <h2 class="s5a-t3">WHAT WE CAN DO?</h2>
+              <p class="s5a-t2">Human actions can also be part of the solution</p>
+            </div>
+          </div>
+
+          <!-- 5B: Energy Usage (pinned, click-driven) -->
+          <div class="s5-panel s5b-panel" id="s5b-panel">
+            <div class="s5-content s5b-content">
+              <!-- Bulb hero icon -->
+              <svg class="s5b-bulb" viewBox="0 0 64 80" fill="none" stroke="#faf6ed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M32 6 C 19 6, 12 16, 12 26 C 12 36, 20 42, 22 50 L 42 50 C 44 42, 52 36, 52 26 C 52 16, 45 6, 32 6 Z" />
+                <line x1="22" y1="56" x2="42" y2="56" />
+                <line x1="24" y1="62" x2="40" y2="62" />
+                <path d="M28 68 C 28 72, 36 72, 36 68" />
+              </svg>
+              <h2 class="s5b-t1">ENERGY USAGE</h2>
+              <p class="s5b-st1">Use less energy in your daily life.</p>
+              <div class="s5b-icons">
+                <button class="s5b-item" data-target="st2" type="button">
+                  <svg class="s5b-icon" viewBox="0 0 64 80" fill="none" stroke="#faf6ed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 30 L 48 30 L 40 8 L 24 8 Z" />
+                    <line x1="32" y1="30" x2="32" y2="60" />
+                    <line x1="18" y1="60" x2="46" y2="60" />
+                    <ellipse cx="32" cy="62" rx="14" ry="3" />
+                  </svg>
+                  <p class="s5b-st2">Turn off lights when not needed</p>
+                </button>
+                <button class="s5b-item" data-target="st3" type="button">
+                  <svg class="s5b-icon" viewBox="0 0 64 64" fill="none" stroke="#faf6ed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 20 C 14 12, 22 6, 32 6 C 42 6, 50 12, 50 20" />
+                    <polyline points="46,16 50,20 54,16" />
+                    <path d="M50 44 C 50 52, 42 58, 32 58 C 22 58, 14 52, 14 44" />
+                    <polyline points="18,48 14,44 10,48" />
+                    <polygon points="32,24 26,34 31,34 29,40 36,30 31,30 33,24" />
+                  </svg>
+                  <p class="s5b-st3">Choose energy-efficient appliances.</p>
+                </button>
+                <button class="s5b-item" data-target="st4" type="button">
+                  <svg class="s5b-icon" viewBox="0 0 64 64" fill="none" stroke="#faf6ed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="32" cy="16" r="6" />
+                    <line x1="32" y1="4" x2="32" y2="8" />
+                    <line x1="44" y1="16" x2="40" y2="16" />
+                    <line x1="20" y1="16" x2="24" y2="16" />
+                    <line x1="41" y1="7" x2="38" y2="10" />
+                    <line x1="23" y1="7" x2="26" y2="10" />
+                    <polygon points="12,52 52,52 46,32 18,32" />
+                    <line x1="18" y1="32" x2="14" y2="52" />
+                    <line x1="32" y1="32" x2="32" y2="52" />
+                    <line x1="46" y1="32" x2="50" y2="52" />
+                    <line x1="22" y1="42" x2="42" y2="42" />
+                  </svg>
+                  <p class="s5b-st4">If possible, switch to clean energy sources.</p>
+                </button>
+              </div>
+              <p class="s5b-hint">Click each icon to learn more</p>
+            </div>
+          </div>
+
+          <!-- 5C: Transport -->
+          <div class="s5-panel s5c-panel">
+            <div class="s5-content s5c-content">
+              <h2 class="s5c-t1">TRANSPORT</h2>
+              <p class="s5c-st1">Rethink how you move</p>
+              <p class="s5c-st2">Use public transport<br/>Walk or cycle when possible</p>
+              <div class="s5c-stage">
+                <div class="s5c-line"></div>
+                <img src="/bus.png"     class="s5c-vehicle s5c-train"   alt="Bus" />
+                <img src="/walk.png"    class="s5c-vehicle s5c-walker"  alt="Person walking" />
+                <img src="/bicycle.png" class="s5c-vehicle s5c-bicycle" alt="Bicycle" />
+              </div>
+            </div>
+          </div>
+
+          <!-- 5D: Sustainable Choices -->
+          <div class="s5-panel s5d-panel">
+            <div class="s5-content s5d-content">
+              <div class="s5d-icons">
+                <img src="/bottle.png" alt="Reusable bottle" class="s5d-icon s5d-bottle" />
+                <img src="/recycle_bag.png" alt="Reusable bag" class="s5d-icon s5d-bag" />
+                <img src="/recycle.png" alt="Recycle symbol" class="s5d-icon s5d-recycle" />
+              </div>
+              <div class="s5d-text">
+                <h2 class="s5d-t1">SUSTAINABLE CHOICES</h2>
+                <p class="s5d-st1">The choices we make every day matter.</p>
+                <p class="s5d-st2">Reduce what you throw away. Reuse what you can. Recycle responsibly.</p>
+                <p class="s5d-st3">Make more conscious choices in your daily life</p>
+                <p class="s5d-st4">Support sustainable products and avoid unnecessary consumption.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5E: Closing -->
+          <div class="s5-panel s5e-panel">
+            <div class="s5-content s5e-content">
+              <h2 class="s5e-t1">One action may seem small</h2>
+              <img src="/handshake.png" alt="Handshake" class="s5e-handshake" />
+              <p class="s5e-t2">But when many people act together,</p>
+              <p class="s5e-t3">Small changes become powerful impact</p>
+            </div>
+          </div>
+
+        </div><!-- end s5-scroll-stage -->
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SCENE 6: CALL TO ACTION                      -->
+      <!-- ============================================ -->
+      <section class="scene scene-6">
+        <div class="layer s6-bg"></div>
+
+        <!-- Phase 1: Reflection + before/after slider -->
+        <div class="s6-phase s6-phase-1">
+          <div class="s6-content">
+            <h2 class="s6-t1">What once felt distant is now part of our <span class="reality-word">REALITY</span></h2>
+            <p class="s6-t2">But this story is still being written.</p>
+            <div class="s6-slider" id="s6-slider">
+              <img src="/healthy_forest.jpeg" class="s6-slider-img s6-slider-before" alt="Healthy forest before climate change" />
+              <div class="s6-slider-after-wrap">
+                <img src="/kemarau.jpg" class="s6-slider-img s6-slider-after" alt="Dry landscape after climate change" />
+              </div>
+              <div class="s6-slider-handle"></div>
+            </div>
+            <p class="s6-t3">Every choice we make shapes what comes next.</p>
+          </div>
+        </div>
+
+        <!-- Phase 2: CTA -->
+        <div class="s6-phase s6-phase-2">
+          <div class="s6-content s6-cta-content">
+            <h2 class="s6-final-line">
+              <span class="s6-stencil">A better future is still possible,</span>
+              <span class="s6-stencil">and it begins with</span>
+              <span class="s6-stencil s6-us-highlight">US</span>
+            </h2>
+            <button class="cta-button" type="button">Be Part of the Change</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SCENE 5A: Enter-key UI overlay                -->
+      <!-- ============================================ -->
+      <div class="s5a-enter-hint" aria-hidden="true">
+        Press <kbd>Enter</kbd> to continue
+      </div>
+
+      <!-- ============================================ -->
+      <!-- Window-open transition shutters (Scene 5A → 5B) -->
+      <!-- ============================================ -->
+      <div class="window-shutter" aria-hidden="true">
+        <div class="window-shutter-panel window-shutter-top"></div>
+        <div class="window-shutter-panel window-shutter-bottom"></div>
+      </div>
+
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
