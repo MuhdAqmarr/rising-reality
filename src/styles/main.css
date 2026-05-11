@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=Poppins:wght@400;500;600&display=swap');
 
+/*
+  A Rising Reality CSS guide
+  --------------------------
+  1. Base/camera rules define the fixed viewport used by every scene.
+  2. Scene sections are grouped in story order: Scene 1 through Scene 6.
+  3. GSAP owns most transforms and opacity values; CSS defines layout,
+     visual style, and stable starting positions.
+  4. Prefer transform-friendly properties for animated elements so the
+     browser can keep the experience smooth while scrolling.
+*/
+
 /* RESET & BASE */
 *, *::before, *::after { 
   box-sizing: border-box; 
@@ -81,7 +92,7 @@ h1, h2, h3, h4, h5, h6, .hero-title {
   height: 100%;
   /* Fallback color if image is loading */
   background-color: #0a0e17; 
-  background-image: linear-gradient(to bottom, rgba(5,5,5,0.2) 0%, rgba(5,5,5,0.9) 100%), url('/iceberg_bg.png');
+  background-image: linear-gradient(to bottom, rgba(5,5,5,0.2) 0%, rgba(5,5,5,0.9) 100%), url('/assets/iceberg_bg.png');
   background-size: cover;
   background-position: center;
   will-change: transform, filter;
@@ -676,7 +687,7 @@ h1, h2, h3, h4, h5, h6, .hero-title {
   left: 0;
   width: 100vw;
   height: 55vh;
-  background-image: url('/kemarau.png');
+  background-image: url('/assets/kemarau.png');
   background-size: cover;
   background-position: center bottom;
   opacity: 0;
@@ -1686,49 +1697,6 @@ h1, h2, h3, h4, h5, h6, .hero-title {
   pointer-events: none;
 }
 
-/* Phase 2 — CTA */
-.s6-cta-content { gap: 0.5rem; }
-.s6-cta-t1, .s6-cta-t2 {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(1.4rem, 2.6vw, 2.6rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  text-transform: none;
-  margin: 0;
-}
-.s6-cta-us {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(5rem, 14vw, 14rem);
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  margin: 1.5rem 0 2.5rem;
-  background: linear-gradient(135deg, #1a1a1a 0%, #555 60%, #1a1a1a 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  line-height: 1;
-}
-.cta-button {
-  background: transparent;
-  color: #1a1a1a;
-  padding: 1.1rem 2.8rem;
-  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
-  font-weight: 600;
-  font-family: inherit;
-  border: 2px solid #1a1a1a;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  letter-spacing: 0.02em;
-}
-.cta-button:hover {
-  background: #1a1a1a;
-  color: #faf6ed;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-}
-.cta-button:focus { outline: 2px solid #1a1a1a; outline-offset: 4px; }
-
 /* Final CTA stencil fill + border draw */
 .s6-cta-content { gap: 2.8rem; }
 .s6-final-line {
@@ -1770,8 +1738,16 @@ h1, h2, h3, h4, h5, h6, .hero-title {
   isolation: isolate;
   overflow: visible;
   background: transparent;
+  color: #1a1a1a;
+  padding: 1.1rem 2.8rem;
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: 0.02em;
   pointer-events: auto;
-  border-color: rgba(26, 26, 26, 0.22);
+  border: 2px solid rgba(26, 26, 26, 0.22);
+  border-radius: 50px;
+  cursor: pointer;
   box-shadow: 0 10px 26px rgba(26, 26, 26, 0.06);
   transition: color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
@@ -1806,6 +1782,7 @@ h1, h2, h3, h4, h5, h6, .hero-title {
   border-color: #1a1a1a;
   box-shadow: 0 16px 34px rgba(26, 26, 26, 0.12);
 }
+.cta-button:focus { outline: 2px solid #1a1a1a; outline-offset: 4px; }
 
 .s2-main-layer {
   z-index: 25;

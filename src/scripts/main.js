@@ -1,4 +1,13 @@
-import './style.css'
+/**
+ * Main animation controller for A Rising Reality.
+ *
+ * Learning note:
+ * This project uses a fixed "camera" and one very tall `.scroll-container`.
+ * The user scrolls through the tall container, while GSAP updates the fixed
+ * scenes inside the camera. That pattern is common in scrollytelling sites
+ * because it separates narrative time (scroll distance) from screen layout.
+ */
+import '../styles/main.css'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
@@ -27,10 +36,8 @@ function initAnimations() {
   const title1 = new SplitType('.hero-title.part-1', { types: 'chars' })
   const title2 = new SplitType('.hero-title.part-2', { types: 'chars' })
   const subtitle = new SplitType('.hero-subtitle', { types: 'lines' })
-  const s2t1 = new SplitType('.s2-text.t1', { types: 'words, chars' })
   const s2t2 = new SplitType('.s2-text.t2', { types: 'words' })
   const s2t3 = new SplitType('.s2-text.t3 p', { types: 'lines' })
-  const s2t4 = new SplitType('.s2-text.t4', { types: 'words, chars' })
   const s3at1 = new SplitType('.s3a-t1', { types: 'words' })
   const s3at2 = new SplitType('.s3a-t2', { types: 'lines' })
   const s3bt1 = new SplitType('.s3b-t1', { types: 'words, chars' })
@@ -907,10 +914,6 @@ function initAnimations() {
       .to('.s5b-icons', { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out' }, '+=0.35')
       .to('.s5b-hint',  { opacity: 1, duration: 0.6, ease: 'power2.out' }, '+=0.2')
   })
-
-  // ============================================
-  // SCENE 5B: Click interaction (reveal subtext on click, no scroll lock)
-  // ============================================
 
   // ============================================
   // SCENE 5B: Click interaction (reveal subtext on click, no scroll lock)
