@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run & Edit Guide - A Rising Reality</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="page">
+      <aside class="sidebar">
+        <h1 class="brand">A Rising Reality</h1>
+        <p class="tagline">From running to editing</p>
+        <nav class="nav" aria-label="Documentation">
+          <a href="./index.html">Start Here</a>
+          <a class="active" href="./run-and-edit.html">Run &amp; Edit Guide</a>
+          <a href="./architecture.html">Architecture</a>
+          <a href="./scene-guide.html">Scene Guide</a>
+          <a href="./debugging.html">Debugging</a>
+          <a href="./asset-inventory.html">Asset Inventory</a>
+          <a href="./Rising-Reality-WireframeStoryboard.pdf">Storyboard PDF</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <p class="eyebrow">Run &amp; Edit Guide</p>
+        <h1>Start here when you want to run or change the project.</h1>
+        <p class="lead">
+          Follow this page from top to bottom. It covers setup, local preview,
+          editing text, changing assets, adjusting animation, debugging, and
+          preparing the final build.
+        </p>
+
+        <h2>1. Install The Tools</h2>
+        <p>Install Node.js first. This project uses Vite, so it runs through npm commands.</p>
+        <p>Recommended: use the current LTS version of Node.js.</p>
+
+        <h2>2. Open The Project Folder</h2>
+        <p>Open a terminal inside the project folder:</p>
+        <pre><code>C:\Dev\Web\gsap-project\rising-reality</code></pre>
+        <p>If you are using VS Code, open the folder first, then use the built-in terminal.</p>
+
+        <h2>3. Install Dependencies</h2>
+        <p>Run this once after downloading or cloning the project:</p>
+        <pre><code>npm install</code></pre>
+        <p>This creates the <code>node_modules</code> folder. Do not edit that folder manually.</p>
+
+        <h2>4. Run The Website Locally</h2>
+        <p>Start the development server:</p>
+        <pre><code>npm run dev</code></pre>
+        <p>Open the local URL shown by Vite. It is usually:</p>
+        <pre><code>http://localhost:5173/</code></pre>
+
+        <div class="note">
+          Keep the terminal running while editing. Vite will auto-refresh the
+          browser when files change.
+        </div>
+
+        <h2>5. Know Which File To Edit</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>File</th>
+              <th>What To Look For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Change story text</td>
+              <td><code>index.html</code></td>
+              <td>Find the scene section, then edit headings and paragraphs.</td>
+            </tr>
+            <tr>
+              <td>Move or style elements</td>
+              <td><code>src/styles/main.css</code></td>
+              <td>Find the class name from HTML, then update its CSS rule.</td>
+            </tr>
+            <tr>
+              <td>Change animation timing</td>
+              <td><code>src/scripts/main.js</code></td>
+              <td>Find the scene comment, then adjust GSAP timeline values.</td>
+            </tr>
+            <tr>
+              <td>Add or replace images</td>
+              <td><code>public/assets/</code></td>
+              <td>Place the file here, then reference it with <code>/assets/file-name.png</code>.</td>
+            </tr>
+            <tr>
+              <td>Read learning notes</td>
+              <td><code>docs/</code></td>
+              <td>Open <code>docs/index.html</code> in the browser.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>6. Edit Text Safely</h2>
+        <p>Find the scene in <code>index.html</code>. For example, Scene 6 uses:</p>
+        <pre><code>&lt;section class="scene scene-6"&gt;</code></pre>
+        <p>Edit text inside headings, paragraphs, and buttons. Keep class names unchanged unless you also update CSS and JavaScript.</p>
+
+        <h2>7. Replace Or Add Assets</h2>
+        <ol>
+          <li>Put the new image, video, SVG, or GIF in <code>public/assets/</code>.</li>
+          <li>Use a simple filename, for example <code>new-forest.webp</code>.</li>
+          <li>Reference it from HTML with <code>/assets/new-forest.webp</code>.</li>
+          <li>Reference it from CSS with <code>url('/assets/new-forest.webp')</code>.</li>
+        </ol>
+        <p>After replacing an asset, refresh the browser and check that it appears in the correct scene.</p>
+
+        <h2>8. Adjust Styling</h2>
+        <p>Use <code>src/styles/main.css</code> for layout and appearance.</p>
+        <p>Good changes for beginners:</p>
+        <ul>
+          <li>Change font size with <code>font-size</code>.</li>
+          <li>Change color with <code>color</code> or <code>background</code>.</li>
+          <li>Change spacing with <code>gap</code>, <code>margin</code>, or <code>padding</code>.</li>
+          <li>Move decorative elements with <code>transform</code>.</li>
+        </ul>
+
+        <h2>9. Adjust Animation</h2>
+        <p>Use <code>src/scripts/main.js</code> for GSAP animation.</p>
+        <p>Common values to adjust:</p>
+        <ul>
+          <li><code>duration</code> controls how long an animation segment takes inside the timeline.</li>
+          <li><code>opacity</code> or <code>autoAlpha</code> controls fade in and fade out.</li>
+          <li><code>x</code>, <code>y</code>, <code>scale</code>, and <code>rotation</code> control movement.</li>
+          <li>Timeline labels such as <code>scene6start</code> help position animations.</li>
+        </ul>
+        <p>After changing animation timing, scroll through the full page from start to end.</p>
+
+        <h2>10. Debug Before Sharing</h2>
+        <ul>
+          <li>Run <code>npm run build</code> to catch missing imports or broken build paths.</li>
+          <li>Check the browser console for red errors.</li>
+          <li>Check that images load from <code>/assets/...</code>.</li>
+          <li>Check Scene 5 Enter-key interaction and button clicks.</li>
+          <li>Check the final CTA button hover effect.</li>
+        </ul>
+
+        <h2>11. Build The Final Version</h2>
+        <p>When editing is complete, run:</p>
+        <pre><code>npm run build</code></pre>
+        <p>Vite will create a production build in <code>dist/</code>.</p>
+
+        <h2>12. Student Editing Rules</h2>
+        <ul>
+          <li>Do not edit <code>node_modules</code>.</li>
+          <li>Do not rename class names unless you update all matching HTML, CSS, and JS references.</li>
+          <li>Keep new assets inside <code>public/assets/</code>.</li>
+          <li>Make one change at a time, then refresh and test.</li>
+          <li>Use the Scene Guide when you are not sure where a section belongs.</li>
+        </ul>
+
+        <nav class="footer-nav" aria-label="Next pages">
+          <a href="./index.html">Back to Start</a>
+          <a href="./architecture.html">Next: Architecture</a>
+          <a href="../index.html">Open Website</a>
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>

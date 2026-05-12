@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Rising Reality Documentation</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="page">
+      <aside class="sidebar">
+        <h1 class="brand">A Rising Reality</h1>
+        <p class="tagline">Student documentation hub</p>
+        <nav class="nav" aria-label="Documentation">
+          <a class="active" href="./index.html">Start Here</a>
+          <a href="./run-and-edit.html">Run &amp; Edit Guide</a>
+          <a href="./architecture.html">Architecture</a>
+          <a href="./scene-guide.html">Scene Guide</a>
+          <a href="./debugging.html">Debugging</a>
+          <a href="./asset-inventory.html">Asset Inventory</a>
+          <a href="./Rising-Reality-WireframeStoryboard.pdf">Storyboard PDF</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <p class="eyebrow">Start Here</p>
+        <h1>Learn the project by following the story.</h1>
+        <p class="lead">
+          This documentation explains how the scrollytelling website is built,
+          how to run it locally, how to edit it safely, and how to debug common
+          issues.
+        </p>
+
+        <section class="cards" aria-label="Documentation pages">
+          <article class="card">
+            <h2>Run &amp; Edit Guide</h2>
+            <p>Follow this first: install, run, edit text, update assets, adjust animation, and build.</p>
+            <a href="./run-and-edit.html">Open run and edit guide</a>
+          </article>
+          <article class="card">
+            <h2>Architecture</h2>
+            <p>Understand the fixed camera, tall scroll container, GSAP timeline, Lenis, and SplitType setup.</p>
+            <a href="./architecture.html">Open architecture notes</a>
+          </article>
+          <article class="card">
+            <h2>Scene Guide</h2>
+            <p>Use this when editing the story scene by scene, from the intro to the final call to action.</p>
+            <a href="./scene-guide.html">Open scene guide</a>
+          </article>
+          <article class="card">
+            <h2>Debugging</h2>
+            <p>Fix broken assets, ScrollTrigger timing issues, button hover problems, and interaction bugs.</p>
+            <a href="./debugging.html">Open debugging guide</a>
+          </article>
+          <article class="card">
+            <h2>Asset Inventory</h2>
+            <p>Check which image, video, SVG, and GIF files are currently used by the project.</p>
+            <a href="./asset-inventory.html">Open asset inventory</a>
+          </article>
+        </section>
+
+        <h2>Quick Start</h2>
+        <p>Open a terminal in the project folder, then run:</p>
+        <pre><code>npm install
+npm run dev</code></pre>
+        <p>After Vite starts, open the local URL shown in the terminal. The default is usually <code>http://localhost:5173/</code>.</p>
+
+        <h2>Project Structure</h2>
+        <pre><code>.
+|-- docs/
+|   |-- index.html
+|   |-- run-and-edit.html
+|   |-- architecture.html
+|   |-- scene-guide.html
+|   |-- debugging.html
+|   |-- asset-inventory.html
+|   `-- Rising-Reality-WireframeStoryboard.pdf
+|-- public/
+|   |-- favicon.svg
+|   `-- assets/
+|-- src/
+|   |-- scripts/main.js
+|   `-- styles/main.css
+|-- index.html
+|-- package.json
+`-- package-lock.json</code></pre>
+
+        <h2>Where To Edit</h2>
+        <ul>
+          <li><code>index.html</code> contains the story markup.</li>
+          <li><code>src/scripts/main.js</code> contains animation timing and interactions.</li>
+          <li><code>src/styles/main.css</code> contains layout, visual styling, and responsive rules.</li>
+          <li><code>public/assets/</code> contains runtime media files.</li>
+          <li><code>docs/</code> contains this learning documentation.</li>
+        </ul>
+
+        <div class="note">
+          Learning goal: do not memorize every line. First understand the pattern:
+          scroll height creates time, the fixed camera shows the scene, and GSAP
+          connects both together.
+        </div>
+
+        <nav class="footer-nav" aria-label="Next pages">
+          <a href="./run-and-edit.html">Next: Run &amp; Edit Guide</a>
+          <a href="../index.html">Open Website</a>
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scene Guide - A Rising Reality</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="page">
+      <aside class="sidebar">
+        <h1 class="brand">A Rising Reality</h1>
+        <p class="tagline">Scene editing map</p>
+        <nav class="nav" aria-label="Documentation">
+          <a href="./index.html">Start Here</a>
+          <a href="./run-and-edit.html">Run &amp; Edit Guide</a>
+          <a href="./architecture.html">Architecture</a>
+          <a class="active" href="./scene-guide.html">Scene Guide</a>
+          <a href="./debugging.html">Debugging</a>
+          <a href="./asset-inventory.html">Asset Inventory</a>
+          <a href="./Rising-Reality-WireframeStoryboard.pdf">Storyboard PDF</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <p class="eyebrow">Scene Guide</p>
+        <h1>Use this page when editing the story.</h1>
+        <p class="lead">
+          Each scene has markup in <code>index.html</code>, styling in
+          <code>src/styles/main.css</code>, and animation timing in
+          <code>src/scripts/main.js</code>.
+        </p>
+
+        <h2>Scene 1 - Title Intro</h2>
+        <p>Purpose: introduces the title and sets the cinematic window/camera metaphor.</p>
+        <ul>
+          <li>Markup: <code>.scene-1</code></li>
+          <li>Key assets: <code>window_frame.png</code>, <code>iceberg_bg.png</code></li>
+          <li>Animation area: intro autoplay timeline and early master timeline.</li>
+        </ul>
+
+        <h2>Scene 2 - The Problem</h2>
+        <p>Purpose: reframes climate change from something distant to something personal.</p>
+        <ul>
+          <li>Markup: <code>.scene-2</code></li>
+          <li>Key idea: text is split with SplitType and revealed in sequence.</li>
+        </ul>
+
+        <h2>Scene 3 - Effects</h2>
+        <p>Purpose: shows warming, melting ice, heatwaves, droughts, floods, storms, and ecosystem disruption.</p>
+        <ul>
+          <li>Markup: <code>.scene-3</code></li>
+          <li>Key assets: <code>globe_space.mp4</code>, <code>world.svg</code>, <code>sun.png</code>, tree images, storm cloud images, <code>hurricane.gif</code></li>
+          <li>Implementation note: rain drops are generated dynamically in JavaScript.</li>
+        </ul>
+
+        <h2>Scene 4 - Causes</h2>
+        <p>Purpose: explains human causes through a vertical timeline path.</p>
+        <ul>
+          <li>Markup: <code>.scene-4</code></li>
+          <li>Key assets: <code>factory.png</code>, <code>house.png</code>, <code>car.png</code>, tree images, building images</li>
+          <li>Implementation note: JavaScript measures the SVG path length, then animates dash offset to draw the line.</li>
+        </ul>
+
+        <h2>Scene 5 - What We Can Do</h2>
+        <p>Purpose: shifts the story from problem to action.</p>
+        <ul>
+          <li>Markup: <code>.scene-5</code></li>
+          <li>Enter key unlocks the transition from 5A to 5B.</li>
+          <li>Energy usage buttons reveal subtext.</li>
+          <li>Key assets: <code>bus.png</code>, <code>walk.png</code>, <code>bicycle.png</code>, <code>bottle.png</code>, <code>recycle_bag.png</code>, <code>recycle.png</code>, <code>handshake.png</code></li>
+        </ul>
+
+        <h2>Scene 6 - Call To Action</h2>
+        <p>Purpose: ends with a hopeful final message and CTA button.</p>
+        <ul>
+          <li>Markup: <code>.scene-6</code></li>
+          <li>Key assets: <code>healthy_forest.jpeg</code>, <code>kemarau.jpg</code></li>
+          <li>The final <code>US</code> word is highlighted with <code>.s6-us-highlight</code>.</li>
+          <li>The CTA button uses <code>.cta-button::before</code> to draw the border on hover.</li>
+        </ul>
+
+        <nav class="footer-nav" aria-label="Next pages">
+          <a href="./architecture.html">Previous: Architecture</a>
+          <a href="./debugging.html">Next: Debugging</a>
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>

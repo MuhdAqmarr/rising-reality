@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debugging - A Rising Reality</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="page">
+      <aside class="sidebar">
+        <h1 class="brand">A Rising Reality</h1>
+        <p class="tagline">Fix common issues</p>
+        <nav class="nav" aria-label="Documentation">
+          <a href="./index.html">Start Here</a>
+          <a href="./run-and-edit.html">Run &amp; Edit Guide</a>
+          <a href="./architecture.html">Architecture</a>
+          <a href="./scene-guide.html">Scene Guide</a>
+          <a class="active" href="./debugging.html">Debugging</a>
+          <a href="./asset-inventory.html">Asset Inventory</a>
+          <a href="./Rising-Reality-WireframeStoryboard.pdf">Storyboard PDF</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <p class="eyebrow">Debugging</p>
+        <h1>Check paths, timing, and pointer events first.</h1>
+        <p class="lead">
+          Most issues in this project come from asset paths, ScrollTrigger
+          timing, starting animation states, or layers blocking clicks.
+        </p>
+
+        <h2>Build Check</h2>
+        <p>Run this before sharing the project:</p>
+        <pre><code>npm run build</code></pre>
+        <p>If the build passes, Vite can resolve the scripts, styles, and runtime asset paths.</p>
+
+        <h2>Broken Images</h2>
+        <p>All runtime media should live in <code>public/assets/</code>.</p>
+        <pre><code>&lt;img src="/assets/example.png" alt="Example"&gt;</code></pre>
+        <pre><code>background-image: url('/assets/example.png');</code></pre>
+        <ul class="checklist">
+          <li>Check the file exists in <code>public/assets/</code>.</li>
+          <li>Check filename case exactly, especially <code>.PNG</code> vs <code>.png</code>.</li>
+          <li>Check the path starts with <code>/assets/</code>.</li>
+        </ul>
+
+        <h2>ScrollTrigger Feels Wrong</h2>
+        <ul class="checklist">
+          <li>A new scene may have been added without adjusting timeline timing.</li>
+          <li>An element may start with the wrong <code>opacity</code>, <code>autoAlpha</code>, or transform.</li>
+          <li>Fonts or images may load late and change layout after ScrollTrigger measured the page.</li>
+        </ul>
+        <pre><code>ScrollTrigger.refresh()</code></pre>
+
+        <h2>Button Hover Does Not Show</h2>
+        <p>The final CTA button is styled in <code>src/styles/main.css</code> under:</p>
+        <pre><code>.cta-button
+.cta-button::before
+.cta-button:hover::before</code></pre>
+        <p>The border draw effect works by changing four background-size values on the <code>::before</code> pseudo-element.</p>
+
+        <h2>Interaction Does Not Click</h2>
+        <p>Most scene layers start with <code>pointer-events: none</code> so they do not block scroll.</p>
+        <p>Interactive elements need their own <code>pointer-events: auto</code>.</p>
+        <pre><code>.cta-button {
+  pointer-events: auto;
+}</code></pre>
+
+        <h2>Performance Notes</h2>
+        <p>Prefer animating <code>transform</code>, <code>opacity</code>, and carefully used <code>clip-path</code>.</p>
+        <p>Avoid animating layout-heavy properties such as <code>top</code>, <code>left</code>, <code>width</code>, or <code>height</code> during scroll-heavy sections.</p>
+
+        <nav class="footer-nav" aria-label="Next pages">
+          <a href="./scene-guide.html">Previous: Scene Guide</a>
+          <a href="./asset-inventory.html">Next: Asset Inventory</a>
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>

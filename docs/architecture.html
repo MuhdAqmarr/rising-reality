@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture - A Rising Reality</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="page">
+      <aside class="sidebar">
+        <h1 class="brand">A Rising Reality</h1>
+        <p class="tagline">How the site works</p>
+        <nav class="nav" aria-label="Documentation">
+          <a href="./index.html">Start Here</a>
+          <a href="./run-and-edit.html">Run &amp; Edit Guide</a>
+          <a class="active" href="./architecture.html">Architecture</a>
+          <a href="./scene-guide.html">Scene Guide</a>
+          <a href="./debugging.html">Debugging</a>
+          <a href="./asset-inventory.html">Asset Inventory</a>
+          <a href="./Rising-Reality-WireframeStoryboard.pdf">Storyboard PDF</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <p class="eyebrow">Architecture</p>
+        <h1>The page is a fixed camera controlled by scroll.</h1>
+        <p class="lead">
+          This project is a single-page scrollytelling experience. It uses HTML
+          sections, CSS layers, and one JavaScript animation controller instead
+          of a component framework.
+        </p>
+
+        <h2>Core Pattern</h2>
+        <ol>
+          <li><code>.scroll-container</code> creates a very tall page.</li>
+          <li><code>.camera</code> is fixed to the viewport.</li>
+          <li>Every <code>.scene</code> sits inside the camera.</li>
+          <li>GSAP changes opacity, transforms, clipping, and text states as scroll progress advances.</li>
+        </ol>
+
+        <h2>Main Files</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Responsibility</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>index.html</code></td>
+              <td>All story markup and scene structure.</td>
+            </tr>
+            <tr>
+              <td><code>src/scripts/main.js</code></td>
+              <td>GSAP setup, Lenis setup, SplitType text splits, timeline, and interactions.</td>
+            </tr>
+            <tr>
+              <td><code>src/styles/main.css</code></td>
+              <td>Fixed camera layout, scene styling, responsive rules, and hover effects.</td>
+            </tr>
+            <tr>
+              <td><code>public/assets/</code></td>
+              <td>Images, SVGs, GIFs, and video loaded by the website.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Animation Stack</h2>
+        <p>GSAP handles the actual animation values and sequencing.</p>
+        <p>ScrollTrigger connects the master timeline to the scroll position.</p>
+        <p>Lenis smooths scrolling. The important bridge is:</p>
+        <pre><code>lenis.on('scroll', ScrollTrigger.update)
+gsap.ticker.add((time) => {
+  lenis.raf(time * 1000)
+})</code></pre>
+
+        <p>SplitType breaks selected text into chars, words, or lines so GSAP can animate smaller pieces of text.</p>
+
+        <h2>Scene Visibility</h2>
+        <p>
+          CSS starts most scenes hidden. JavaScript then uses <code>gsap.set()</code>
+          to prepare the starting state. During the master timeline, scenes fade
+          in and out using <code>autoAlpha</code>, <code>opacity</code>, and
+          <code>visibility</code>.
+        </p>
+
+        <div class="note">
+          Use <code>autoAlpha</code> when an element should become invisible and
+          non-interactive. Use <code>opacity</code> when the element can stay in
+          place but be visually transparent.
+        </div>
+
+        <h2>Interaction Model</h2>
+        <p>
+          Most of the website is scroll-driven. Scene 5 has a special interaction:
+          the scroll reaches a lock marker, waits for the Enter key, then plays
+          a transition into the next panel.
+        </p>
+
+        <nav class="footer-nav" aria-label="Next pages">
+          <a href="./run-and-edit.html">Previous: Run &amp; Edit Guide</a>
+          <a href="./scene-guide.html">Next: Scene Guide</a>
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Inventory - A Rising Reality</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="page">
+      <aside class="sidebar">
+        <h1 class="brand">A Rising Reality</h1>
+        <p class="tagline">Runtime media map</p>
+        <nav class="nav" aria-label="Documentation">
+          <a href="./index.html">Start Here</a>
+          <a href="./run-and-edit.html">Run &amp; Edit Guide</a>
+          <a href="./architecture.html">Architecture</a>
+          <a href="./scene-guide.html">Scene Guide</a>
+          <a href="./debugging.html">Debugging</a>
+          <a class="active" href="./asset-inventory.html">Asset Inventory</a>
+          <a href="./Rising-Reality-WireframeStoryboard.pdf">Storyboard PDF</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <p class="eyebrow">Asset Inventory</p>
+        <h1>Every active runtime asset lives in one folder.</h1>
+        <p class="lead">
+          All media used by the website is stored in <code>public/assets/</code>.
+          Keep this folder clean so students can understand what each file is for.
+        </p>
+
+        <h2>Active Assets</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Used For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>bicycle.png</code></td><td>Scene 5 transport option</td></tr>
+            <tr><td><code>big_cloud_storm.png</code></td><td>Scene 3 flood cloud</td></tr>
+            <tr><td><code>bottle.png</code></td><td>Scene 5 consumption panel</td></tr>
+            <tr><td><code>building1.png</code></td><td>Scene 4 city and deforestation panels</td></tr>
+            <tr><td><code>building2.png</code></td><td>Scene 4 city and deforestation panels</td></tr>
+            <tr><td><code>building3.PNG</code></td><td>Scene 4 city and deforestation panels</td></tr>
+            <tr><td><code>bus.png</code></td><td>Scene 5 transport option</td></tr>
+            <tr><td><code>car.png</code></td><td>Scene 4 emissions panel</td></tr>
+            <tr><td><code>cloud_storm.png</code></td><td>Scene 3 storm cloud</td></tr>
+            <tr><td><code>factory.png</code></td><td>Scene 4 emissions panel</td></tr>
+            <tr><td><code>globe_space.mp4</code></td><td>Scene 3 space and globe background</td></tr>
+            <tr><td><code>handshake.png</code></td><td>Scene 5 collective action panel</td></tr>
+            <tr><td><code>healthy_forest.jpeg</code></td><td>Scene 6 before and after slider</td></tr>
+            <tr><td><code>house.png</code></td><td>Scene 4 emissions panel</td></tr>
+            <tr><td><code>hurricane.gif</code></td><td>Scene 3 hurricanes panel</td></tr>
+            <tr><td><code>iceberg_bg.png</code></td><td>Scene 1 and Scene 3 melting ice</td></tr>
+            <tr><td><code>kemarau.jpg</code></td><td>Scene 6 before and after slider</td></tr>
+            <tr><td><code>kemarau.png</code></td><td>Scene 3 drought background</td></tr>
+            <tr><td><code>ocean.png</code></td><td>Scene 3 ocean transition</td></tr>
+            <tr><td><code>Pokok1.png</code></td><td>Scene 3 drought trees</td></tr>
+            <tr><td><code>Pokok2.png</code></td><td>Scene 3 drought trees</td></tr>
+            <tr><td><code>Pokok3.png</code></td><td>Scene 3 drought trees</td></tr>
+            <tr><td><code>Pokok_Berdaun_1.png</code></td><td>Scene 3 and Scene 4 healthy trees</td></tr>
+            <tr><td><code>Pokok_Berdaun_2.png</code></td><td>Scene 3 and Scene 4 healthy trees</td></tr>
+            <tr><td><code>Pokok_Berdaun_3.png</code></td><td>Scene 3 and Scene 4 healthy trees</td></tr>
+            <tr><td><code>Pokok_Berdaun_4.png</code></td><td>Scene 3 and Scene 4 healthy trees</td></tr>
+            <tr><td><code>recycle.png</code></td><td>Scene 5 consumption panel</td></tr>
+            <tr><td><code>recycle_bag.png</code></td><td>Scene 5 consumption panel</td></tr>
+            <tr><td><code>sun.png</code></td><td>Scene 3 heatwave panel</td></tr>
+            <tr><td><code>termometer_burned.png</code></td><td>Scene 3 rising temperature panel</td></tr>
+            <tr><td><code>walk.png</code></td><td>Scene 5 transport option</td></tr>
+            <tr><td><code>window_frame.png</code></td><td>Scene 1 cinematic window</td></tr>
+            <tr><td><code>world.svg</code></td><td>Scene 3 world map</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Optimization Notes</h2>
+        <p>
+          Some active image files are large. They are kept because the current
+          design uses them, but future optimization work should compress large
+          PNG and JPEG files and test WebP or AVIF versions.
+        </p>
+
+        <nav class="footer-nav" aria-label="Next pages">
+          <a href="./debugging.html">Previous: Debugging</a>
+          <a href="./index.html">Back to Start</a>
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>
