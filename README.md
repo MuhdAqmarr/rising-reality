@@ -4,21 +4,43 @@ A single-page scrollytelling experience about climate change, built with GSAP, S
 
 The story unfolds over six scenes — from a quiet title intro, through the visible effects of warming (heatwaves, droughts, floods, storms, ecosystem collapse), into the human causes, the actions we can take, and a final call to action.
 
-## Quick Start
+## Getting Started
 
-```bash
-npm install
-npm run dev
-```
+### Prerequisites
 
-Vite will print a local URL (usually `http://localhost:5173/`). Open it in a browser.
+Install these once on your computer:
 
-To build for production:
+1. **[Node.js](https://nodejs.org/)** — download the **LTS** version and run the installer (just click Next until done).
+2. **[Visual Studio Code](https://code.visualstudio.com/)** — the code editor you will use.
+
+### Step-by-step
+
+1. **Unzip the project** somewhere easy to find (e.g. Desktop). You should now have a folder called `rising-reality`.
+2. **Open VS Code.**
+3. In VS Code, go to **File → Open Folder…** and pick the `rising-reality` folder you just unzipped.
+   - If a popup asks *"Do you trust the authors of the files in this folder?"*, click **Yes, I trust the authors**.
+4. **Open the built-in terminal** in VS Code: top menu **Terminal → New Terminal** (shortcut: `` Ctrl+` `` on Windows, `` Cmd+` `` on Mac). A terminal panel opens at the bottom.
+5. In that terminal, type the following and press Enter. This downloads everything the project needs (only required the first time):
+   ```bash
+   npm install
+   ```
+6. After it finishes, run the website locally:
+   ```bash
+   npm run dev
+   ```
+7. The terminal will show a line like `Local: http://localhost:5173/`. **Hold Ctrl** (Windows) or **Cmd** (Mac) and click that link — the website opens in your browser.
+8. To **stop** the server later, click in the terminal and press `Ctrl+C`.
+
+### Build for production (optional)
+
+If you want a final shippable version of the site:
 
 ```bash
 npm run build
 npm run preview
 ```
+
+`npm run build` outputs the optimized site into a `dist/` folder. `npm run preview` lets you check the built version locally.
 
 ## Tech Stack
 
