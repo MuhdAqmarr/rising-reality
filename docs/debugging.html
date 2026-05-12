@@ -53,6 +53,26 @@
         </ul>
         <pre><code>ScrollTrigger.refresh()</code></pre>
 
+        <h2>Scroll Feels Too Fast</h2>
+        <p>Check these two places first:</p>
+        <pre><code>/* src/styles/main.css */
+.scroll-container {
+  height: 6800vh;
+}</code></pre>
+        <pre><code>// src/scripts/main.js
+const lenis = new Lenis({
+  wheelMultiplier: 0.55,
+})
+
+scrollTrigger: {
+  scrub: true,
+}</code></pre>
+        <p>
+          Increase <code>height</code> if the whole story still feels too fast.
+          Lower <code>wheelMultiplier</code> if each mouse wheel tick still moves
+          too far.
+        </p>
+
         <h2>Button Hover Does Not Show</h2>
         <p>The final CTA button is styled in <code>src/styles/main.css</code> under:</p>
         <pre><code>.cta-button

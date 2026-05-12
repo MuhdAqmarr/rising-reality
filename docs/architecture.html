@@ -70,13 +70,25 @@
         <h2>Animation Stack</h2>
         <p>GSAP handles the actual animation values and sequencing.</p>
         <p>ScrollTrigger connects the master timeline to the scroll position.</p>
-        <p>Lenis smooths scrolling. The important bridge is:</p>
+        <p>Lenis smooths scrolling, but the wheel movement is intentionally slowed with <code>wheelMultiplier</code> so the story does not rush forward. The important bridge is:</p>
         <pre><code>lenis.on('scroll', ScrollTrigger.update)
 gsap.ticker.add((time) => {
   lenis.raf(time * 1000)
 })</code></pre>
 
         <p>SplitType breaks selected text into chars, words, or lines so GSAP can animate smaller pieces of text.</p>
+
+        <h2>Scroll Feel</h2>
+        <p>
+          The master timeline uses <code>scrub: true</code>. This makes the
+          animation follow the scroll position directly instead of catching up
+          with delayed smoothing.
+        </p>
+        <p>
+          The total scroll distance comes from <code>.scroll-container</code> in
+          CSS. Increasing its <code>height</code> gives every animation beat more
+          scroll room.
+        </p>
 
         <h2>Scene Visibility</h2>
         <p>

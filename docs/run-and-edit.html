@@ -129,7 +129,36 @@
         </ul>
         <p>After changing animation timing, scroll through the full page from start to end.</p>
 
-        <h2>10. Debug Before Sharing</h2>
+        <h2>10. Adjust Scroll Speed</h2>
+        <p>If the story moves too fast when using the mouse wheel, tune these values:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Setting</th>
+              <th>File</th>
+              <th>Effect</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>.scroll-container height</code></td>
+              <td><code>src/styles/main.css</code></td>
+              <td>More height gives the timeline more scroll distance.</td>
+            </tr>
+            <tr>
+              <td><code>wheelMultiplier</code></td>
+              <td><code>src/scripts/main.js</code></td>
+              <td>Lower value makes each wheel tick move less.</td>
+            </tr>
+            <tr>
+              <td><code>scrub</code></td>
+              <td><code>src/scripts/main.js</code></td>
+              <td><code>true</code> makes animation follow scroll directly.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>11. Debug Before Sharing</h2>
         <ul>
           <li>Run <code>npm run build</code> to catch missing imports or broken build paths.</li>
           <li>Check the browser console for red errors.</li>
@@ -138,12 +167,12 @@
           <li>Check the final CTA button hover effect.</li>
         </ul>
 
-        <h2>11. Build The Final Version</h2>
+        <h2>12. Build The Final Version</h2>
         <p>When editing is complete, run:</p>
         <pre><code>npm run build</code></pre>
         <p>Vite will create a production build in <code>dist/</code>.</p>
 
-        <h2>12. Student Editing Rules</h2>
+        <h2>13. Student Editing Rules</h2>
         <ul>
           <li>Do not edit <code>node_modules</code>.</li>
           <li>Do not rename class names unless you update all matching HTML, CSS, and JS references.</li>

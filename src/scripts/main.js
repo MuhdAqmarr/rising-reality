@@ -15,10 +15,11 @@ import SplitType from 'split-type'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// 1. Lenis Setup (Canonical Awwwards Pattern)
+// 1. Lenis Setup (smooth wheel, but slowed down for scrollytelling control)
 const lenis = new Lenis({
-  lerp: 0.05, // Smoothness
+  lerp: 0.06, // Lower = smoother, higher = tighter to wheel input
   smoothWheel: true,
+  wheelMultiplier: 0.55, // Smaller wheel steps stop the story from rushing forward
 })
 lenis.on('scroll', ScrollTrigger.update)
 gsap.ticker.add((time) => {
@@ -245,7 +246,7 @@ function initAnimations() {
       trigger: '.scroll-container',
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 1.5,
+      scrub: true, // Exact scroll-linked scrub; no delayed catch-up smoothing
     }
   })
 

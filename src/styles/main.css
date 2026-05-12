@@ -38,8 +38,8 @@ h1, h2, h3, h4, h5, h6, .hero-title {
 
 /* MASTER SCRUBBER */
 .scroll-container {
-  /* This dictates the total length of the experience. */
-  height: 3800vh;
+  /* Bigger height = more wheel movement needed per animation beat. */
+  height: 6800vh;
 }
 
 /* FIXED CAMERA VIEWPORT */
