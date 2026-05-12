@@ -739,47 +739,49 @@ function initAnimations() {
     // NOTE: bulb/t1/st1/icons/hint reveals are NOT in scrub — see Enter-key transition below
 
     // Transition 5B → 5C
-    .to('.s5-scroll-stage', { y: '-200vh', duration: 4, ease: 'power2.inOut' }, 'scene5start+=60')
+    // Keep only a tiny pause after the Enter-key reveal; 5B should not feel stuck.
+    .to('.s5-scroll-stage', { y: '-200vh', duration: 4, ease: 'power2.inOut' }, 'scene5start+=43')
 
     // ---------- 5C: Transport ----------
     // Phase 1: Text 1 + line + Subtext 1 appear together
-    .fromTo('.s5c-t1',   { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 2, ease: 'power3.out' }, 'scene5start+=68')
-    .fromTo('.s5c-line', { scaleX: 0 }, { scaleX: 1, duration: 2, ease: 'power2.out' }, 'scene5start+=68')
-    .fromTo('.s5c-st1',  { opacity: 0 }, { opacity: 1, duration: 2 }, 'scene5start+=68')
+    .fromTo('.s5c-t1',   { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 2, ease: 'power3.out' }, 'scene5start+=49')
+    .fromTo('.s5c-line', { scaleX: 0 }, { scaleX: 1, duration: 2, ease: 'power2.out' }, 'scene5start+=49')
+    .fromTo('.s5c-st1',  { opacity: 0 }, { opacity: 1, duration: 2 }, 'scene5start+=49')
 
     // Phase 2: Vehicles slide in + Subtext 2 — all together
-    .fromTo('.s5c-st2',     { opacity: 0 }, { opacity: 1, duration: 2 }, 'scene5start+=74')
-    .fromTo('.s5c-train',   { x: '-60vw', opacity: 0 }, { x: 0, opacity: 1, duration: 2.5, ease: 'power3.out' }, 'scene5start+=74')
-    .fromTo('.s5c-walker',  { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 1.8, ease: 'back.out(1.6)' }, 'scene5start+=75')
-    .fromTo('.s5c-bicycle', { x: '60vw', opacity: 0 }, { x: 0, opacity: 1, duration: 2.5, ease: 'power3.out' }, 'scene5start+=74')
+    .fromTo('.s5c-st2',     { opacity: 0 }, { opacity: 1, duration: 2 }, 'scene5start+=55')
+    .fromTo('.s5c-train',   { x: '-60vw', opacity: 0 }, { x: 0, opacity: 1, duration: 2.5, ease: 'power3.out' }, 'scene5start+=55')
+    .fromTo('.s5c-walker',  { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 1.8, ease: 'back.out(1.6)' }, 'scene5start+=56')
+    .fromTo('.s5c-bicycle', { x: '60vw', opacity: 0 }, { x: 0, opacity: 1, duration: 2.5, ease: 'power3.out' }, 'scene5start+=55')
 
     // Transition 5C → 5D: SWIPE TO LEFT
     // 5C slides off-screen left, 5D slides in from off-screen right.
     // 5D's panel is pre-offset (y: -100vh) so it lines up with 5C's row during the swipe.
     // Stage Y does NOT move here — the next vertical move is 5D → 5E.
-    .to('.s5c-panel', { x: '-100vw', duration: 4, ease: 'power3.inOut' }, 'scene5start+=86')
-    .to('.s5d-panel', { x: 0,        duration: 4, ease: 'power3.inOut' }, 'scene5start+=86')
+    // Start soon after the transport reveal so 5C does not create a long dead-scroll pause.
+    .to('.s5c-panel', { x: '-100vw', duration: 4, ease: 'power3.inOut' }, 'scene5start+=64')
+    .to('.s5d-panel', { x: 0,        duration: 4, ease: 'power3.inOut' }, 'scene5start+=64')
 
     // ---------- 5D: Sustainable Choices ----------
     // Content fades in concurrently with the swipe so 5D doesn't arrive empty.
-    .fromTo('.s5d-t1', { opacity: 0 }, { opacity: 1, duration: 2 }, 'scene5start+=88')
-    .fromTo('.s5d-icon', { opacity: 0, x: -30 }, { opacity: 1, x: 0, stagger: 0.4, duration: 2 }, 'scene5start+=90')
-    .fromTo(['.s5d-st1', '.s5d-st2', '.s5d-st3', '.s5d-st4'], { opacity: 0, y: 15 }, { opacity: 1, y: 0, stagger: 0.8, duration: 2 }, 'scene5start+=94')
+    .fromTo('.s5d-t1', { opacity: 0 }, { opacity: 1, duration: 2 }, 'scene5start+=66')
+    .fromTo('.s5d-icon', { opacity: 0, x: -30 }, { opacity: 1, x: 0, stagger: 0.4, duration: 2 }, 'scene5start+=68')
+    .fromTo(['.s5d-st1', '.s5d-st2', '.s5d-st3', '.s5d-st4'], { opacity: 0, y: 15 }, { opacity: 1, y: 0, stagger: 0.8, duration: 2 }, 'scene5start+=72')
 
     // Transition 5D → 5E (vertical, normal delta of -100vh)
     // Both 5D and 5E have a -100vh GSAP offset, so they stack tightly during this move.
-    .to('.s5-scroll-stage', { y: '-300vh', duration: 8, ease: 'power2.inOut' }, 'scene5start+=112')
+    .to('.s5-scroll-stage', { y: '-300vh', duration: 6, ease: 'power2.inOut' }, 'scene5start+=84')
 
     // ---------- 5E: Closing ----------
-    .fromTo('.s5e-t1', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 2 }, 'scene5start+=120')
-    .fromTo('.s5e-handshake', { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 2, ease: 'back.out(1.5)' }, 'scene5start+=124')
-    .fromTo('.s5e-t2', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 2 }, 'scene5start+=128')
-    .fromTo('.s5e-t3', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 2 }, 'scene5start+=132')
+    .fromTo('.s5e-t1', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 2 }, 'scene5start+=92')
+    .fromTo('.s5e-handshake', { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 2, ease: 'back.out(1.5)' }, 'scene5start+=96')
+    .fromTo('.s5e-t2', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 2 }, 'scene5start+=100')
+    .fromTo('.s5e-t3', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 2 }, 'scene5start+=104')
 
     // ============================================
     // SCENE 6: CALL TO ACTION
     // ============================================
-    .addLabel('scene6start', 'scene5start+=140')
+    .addLabel('scene6start', 'scene5start+=116')
 
     // Exit Scene 5
     .to('.scene-5', { autoAlpha: 0, duration: 3, ease: 'power2.inOut' }, 'scene6start')
