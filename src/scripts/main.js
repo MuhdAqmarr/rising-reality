@@ -26,11 +26,128 @@ gsap.ticker.add((time) => {
   lenis.raf(time * 1000)
 })
 gsap.ticker.lagSmoothing(0) // Prevents lag jump on tab switch
+initFixedUi()
 
 // Wait for fonts to load before splitting text
 document.fonts.ready.then(() => {
   initAnimations()
 })
+
+function initFixedUi() {
+  const root = document.documentElement
+  const scrollbar = document.querySelector('.story-scrollbar')
+  const scrollbarTrack = document.querySelector('.story-scrollbar-track')
+  const audio = document.querySelector('.bg-audio')
+  const audioToggle = document.querySelector('.audio-toggle')
+
+  const getScrollLimit = () => (
+    typeof lenis.limit === 'number'
+      ? lenis.limit
+      : document.documentElement.scrollHeight - window.innerHeight
+  )
+
+  const updateScrollProgress = () => {
+    const limit = getScrollLimit()
+    const current = typeof lenis.scroll === 'number' ? lenis.scroll : window.scrollY
+    const progress = limit > 0 ? Math.min(Math.max(current / limit, 0), 1) : 0
+    root.style.setProperty('--scroll-progress', progress.toFixed(4))
+    root.style.setProperty('--scroll-progress-percent', `${(progress * 100).toFixed(2)}%`)
+  }
+
+  lenis.on('scroll', updateScrollProgress)
+  window.addEventListener('resize', updateScrollProgress)
+  updateScrollProgress()
+
+  if (scrollbar && scrollbarTrack) {
+    let isDraggingScrollbar = false
+
+    const scrollToPointer = (clientY, immediate = true) => {
+      const rect = scrollbarTrack.getBoundingClientRect()
+      const progress = rect.height > 0
+        ? Math.min(Math.max((clientY - rect.top) / rect.height, 0), 1)
+        : 0
+      lenis.scrollTo(getScrollLimit() * progress, {
+        immediate,
+        force: true,
+      })
+      root.style.setProperty('--scroll-progress', progress.toFixed(4))
+      root.style.setProperty('--scroll-progress-percent', `${(progress * 100).toFixed(2)}%`)
+    }
+
+    scrollbar.addEventListener('pointerdown', (event) => {
+      event.preventDefault()
+      isDraggingScrollbar = true
+      scrollbar.classList.add('is-dragging')
+      scrollbar.setPointerCapture?.(event.pointerId)
+      scrollToPointer(event.clientY, true)
+    })
+
+    scrollbar.addEventListener('pointermove', (event) => {
+      if (!isDraggingScrollbar) return
+      event.preventDefault()
+      scrollToPointer(event.clientY, true)
+    })
+
+    const stopDraggingScrollbar = (event) => {
+      if (!isDraggingScrollbar) return
+      isDraggingScrollbar = false
+      scrollbar.classList.remove('is-dragging')
+      scrollbar.releasePointerCapture?.(event.pointerId)
+    }
+
+    scrollbar.addEventListener('pointerup', stopDraggingScrollbar)
+    scrollbar.addEventListener('pointercancel', stopDraggingScrollbar)
+  }
+
+  if (!audio || !audioToggle) return
+
+  audio.volume = 0.45
+
+  const setAudioState = (isPlaying) => {
+    audioToggle.classList.toggle('is-playing', isPlaying)
+    audioToggle.setAttribute('aria-pressed', String(isPlaying))
+    audioToggle.setAttribute('aria-label', isPlaying ? 'Pause background music' : 'Play background music')
+  }
+
+  const playAudio = async () => {
+    try {
+      await audio.play()
+      setAudioState(true)
+      return true
+    } catch (error) {
+      setAudioState(false)
+      return false
+    }
+  }
+
+  const unlockAudio = async () => {
+    const didPlay = await playAudio()
+    if (!didPlay) return
+    window.removeEventListener('pointerdown', unlockAudio)
+    window.removeEventListener('keydown', unlockAudio)
+    window.removeEventListener('wheel', unlockAudio)
+    window.removeEventListener('touchstart', unlockAudio)
+  }
+
+  playAudio()
+  window.addEventListener('pointerdown', unlockAudio, { passive: true })
+  window.addEventListener('keydown', unlockAudio)
+  window.addEventListener('wheel', unlockAudio, { passive: true })
+  window.addEventListener('touchstart', unlockAudio, { passive: true })
+
+  audioToggle.addEventListener('click', async () => {
+    if (audio.paused) {
+      await playAudio()
+      return
+    }
+
+    audio.pause()
+    setAudioState(false)
+  })
+
+  audio.addEventListener('pause', () => setAudioState(false))
+  audio.addEventListener('play', () => setAudioState(true))
+}
 
 function initAnimations() {
   // Initialize Text Splits
@@ -59,12 +176,16 @@ function initAnimations() {
   gsap.set(subtitle.lines, { opacity: 0, y: 20 })
   gsap.set('.scroll-cue', { opacity: 0 })
   gsap.set('.s3-temps, .s3-melting, .s3-melting-bg, .s3-ocean-bg, .s3-diving, .s3e-warm-bg, .s3-heatwave, .s3-droughts, .s3-rain, .s3-storms, .s3-ecosystems, .s3-closing', { autoAlpha: 0 }) // Hide future Scene 3 layers
-  gsap.set('.scene-4, .s4-sub', { autoAlpha: 0 }) // Hide Scene 4 sub-scenes
+  gsap.set('.scene-4', { autoAlpha: 0 })
   gsap.set('.scene-5, .scene-6', { autoAlpha: 0 }) // Hide Scene 5 + 6
   gsap.set('.s5-bg, .s6-bg', { opacity: 0 })
-  gsap.set('.s6-phase-2', { opacity: 0 })
+  gsap.set('.s6-phase-2', { yPercent: 100, willChange: 'transform' })
+  gsap.set('.s6-t1', { xPercent: -50, yPercent: -50 })
   gsap.set('.s6-us-highlight', { opacity: 0, scale: 0.72, y: 36 })
   gsap.set('.s5a-t3', { opacity: 0 })
+  gsap.set('.s5-transition-burst', { autoAlpha: 0 })
+  gsap.set('.s5-burst-wash', { opacity: 0, scale: 0.25, rotation: 0 })
+  gsap.set('.s5-burst-ring, .s5-burst-core, .s5-burst-ray', { opacity: 0 })
   // s5a-enter-hint stays at opacity: 0 (via CSS); controlled by lockScroll()
 
   // 5B elements are NOT scroll-driven — they animate in via the Enter-key transition
@@ -292,7 +413,7 @@ function initAnimations() {
     
     // Scroll, all the text and images scrolls up
     // We scroll up the text layer, the window wall, AND the iceberg background so they all move together
-    .to(['.s2-main-layer', '.window-wall-overlay', '.iceberg-bg', '.s2-text.t2', '.s2-text.t3'], { yPercent: -100, opacity: 0, duration: 2, ease: 'power2.inOut' }, 'scene2_text23+=5')
+    .to(['.window-wall-overlay', '.iceberg-bg', '.s2-text.t2', '.s2-text.t3'], { yPercent: -100, opacity: 0, duration: 2, ease: 'power2.inOut' }, 'scene2_text23+=5')
     
     // and text 4 appear with Ascend Animation
     .fromTo('.s2-text.t4', { yPercent: 50, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 2 }, 'scene2_text23+=6')
@@ -618,10 +739,28 @@ function initAnimations() {
     // ============================================
 
     .addLabel('scene4start', 'scene3j+=12')
-    // Enter Scene 4: 3J out, cream bg in, stage setup
-    .to('.s3-closing', { autoAlpha: 0, duration: 3, ease: 'power2.inOut' }, 'scene4start')
-    .to('.scene-4', { autoAlpha: 1, duration: 0.1 }, 'scene4start+=1')
-    .to('.s4-bg', { opacity: 1, duration: 4, ease: 'power2.inOut' }, 'scene4start+=1')
+    // ---- 3J → 4A: HORIZON-SPLIT REVEAL ----
+    // 3J text pushes forward into the void (scale + blur + fade)
+    .to('.s3j-t1', { scale: 1.7, opacity: 0, filter: 'blur(24px)', duration: 4, ease: 'power2.in' }, 'scene4start')
+    // 3J background dims so the cream burst feels brighter by contrast
+    .to('.s3j-bg', { opacity: 0.35, duration: 3, ease: 'power2.in' }, 'scene4start+=1')
+
+    // Bright horizontal flash beam erupts across the center — the dawn crack
+    .set('.s3-4-flash', { autoAlpha: 1, scaleY: 0.02, scaleX: 0.4 }, 'scene4start+=2.4')
+    .to('.s3-4-flash', { scaleX: 1.05, duration: 0.45, ease: 'power3.out' }, 'scene4start+=2.4')
+    .to('.s3-4-flash', { scaleY: 1, duration: 1.2, ease: 'power2.inOut' }, 'scene4start+=2.85')
+
+    // Scene-4 materializes through a horizontal slit that opens vertically
+    .set('.scene-4', { autoAlpha: 1, clipPath: 'inset(49% 0% 49% 0%)' }, 'scene4start+=2.6')
+    .set('.s4-bg', { opacity: 1 }, 'scene4start+=2.6')
+    .fromTo('.scene-4',
+      { clipPath: 'inset(49% 0% 49% 0%)', filter: 'brightness(1.5)' },
+      { clipPath: 'inset(0% 0% 0% 0%)', filter: 'brightness(1)', duration: 4.2, ease: 'power3.inOut' },
+      'scene4start+=2.6')
+
+    // Flash dissolves once cream has taken over; old layers cleaned up
+    .to('.s3-4-flash', { autoAlpha: 0, duration: 1.2, ease: 'power2.out' }, 'scene4start+=5.4')
+    .to('.s3-closing', { autoAlpha: 0, duration: 0.6, ease: 'power2.out' }, 'scene4start+=6.4')
 
     // MASTER STAGE SCROLLING
     // We move the stage from y: 0 to y: -500vh (total 6 panels)
@@ -710,115 +849,123 @@ function initAnimations() {
 
     // ZOOM INTO LINE TRANSITION: Grow line stroke-width to fill viewport with black,
     // hide other 4F content, then fade in dark Scene 5 bg seamlessly.
-    .to(['.s4f-content', '.s4-dot'], { opacity: 0, duration: 1.5, ease: 'power2.in' }, 'scene5start')
-    .to('#s4-line-path', { strokeWidth: 4000, duration: 3, ease: 'power2.in' }, 'scene5start')
+    .to(['.s4f-content', '.s4-dot'], { opacity: 0, duration: 1.2, ease: 'power2.in' }, 'scene5start')
+    .to('#s4-line-path', { strokeWidth: 4000, duration: 2.4, ease: 'power2.in' }, 'scene5start')
 
     // Reveal Scene 5 — dark bg matches the now-black viewport
-    .to('.scene-5', { autoAlpha: 1, duration: 0.1 }, 'scene5start+=2.5')
-    .to('.s5-bg', { opacity: 1, duration: 2, ease: 'power2.inOut' }, 'scene5start+=2.5')
+    .to('.scene-5', { autoAlpha: 1, duration: 0.1 }, 'scene5start+=2')
+    .to('.s5-bg', { opacity: 1, duration: 1.6, ease: 'power2.inOut' }, 'scene5start+=2')
 
     // Finally fade out Scene 4 (line included) after dark bg is in place
-    .to('.scene-4', { autoAlpha: 0, duration: 1.5 }, 'scene5start+=4')
+    .to('.scene-4', { autoAlpha: 0, duration: 1.2 }, 'scene5start+=3')
 
     // ---------- 5A: Opening (panel stays at y:0, no scroll) ----------
-    // All 3 texts appear in sequence and stay visible: t1 (top) → t2 (bottom) → t3 (middle, large faded)
-    .fromTo('.s5a-t1', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 2 }, 'scene5start+=6')
-    .fromTo('.s5a-t2', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 2 }, 'scene5start+=14')
-    .fromTo('.s5a-t3', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 2.5, ease: 'power2.out' }, 'scene5start+=22')
+    // All 3 texts appear in sequence and stay visible
+    .fromTo('.s5a-t1', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.4 }, 'scene5start+=4')
+    .fromTo('.s5a-t2', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.4 }, 'scene5start+=9')
+    .fromTo('.s5a-t3', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 1.8, ease: 'power2.out' }, 'scene5start+=14')
 
-    // Lock marker — once scrub reaches here, scroll is locked until user presses Enter
-    .addLabel('s5a_lock', 'scene5start+=25')
+    // Lock marker — once scrub reaches here, scroll is locked until user presses Enter / taps
+    .addLabel('s5a_lock', 'scene5start+=17')
 
-    // Transition 5A → 5B (driven by lenis.scrollTo from the Enter handler, not user scroll)
-    .to('.s5-scroll-stage', { y: '-100vh', duration: 4, ease: 'power2.inOut' }, 'scene5start+=34')
+    // Transition 5A → 5B (driven by lenis.scrollTo from the Enter/tap handler, not user scroll)
+    .to('.s5-scroll-stage', { y: '-100vh', duration: 3, ease: 'power2.inOut' }, 'scene5start+=22')
 
-    // Target after Enter — scrub jumps to here; 5B panel is fully in view, ready for sequential reveal
-    .addLabel('s5b_ready', 'scene5start+=40')
+    // Target after Enter/tap — scrub jumps to here; 5B panel is fully in view
+    .addLabel('s5b_ready', 'scene5start+=27')
 
     // ---------- 5B: Energy Usage (click-driven, animated by Enter handler) ----------
-    // NOTE: bulb/t1/st1/icons/hint reveals are NOT in scrub — see Enter-key transition below
 
     // Transition 5B → 5C
-    // Keep only a tiny pause after the Enter-key reveal; 5B should not feel stuck.
-    .to('.s5-scroll-stage', { y: '-200vh', duration: 4, ease: 'power2.inOut' }, 'scene5start+=43')
+    .to('.s5-scroll-stage', { y: '-200vh', duration: 3, ease: 'power2.inOut' }, 'scene5start+=30')
 
     // ---------- 5C: Transport ----------
-    // Phase 1: Text 1 + line + Subtext 1 appear together
-    .fromTo('.s5c-t1',   { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 2, ease: 'power3.out' }, 'scene5start+=49')
-    .fromTo('.s5c-line', { scaleX: 0 }, { scaleX: 1, duration: 2, ease: 'power2.out' }, 'scene5start+=49')
-    .fromTo('.s5c-st1',  { opacity: 0 }, { opacity: 1, duration: 2 }, 'scene5start+=49')
+    .fromTo('.s5c-t1',   { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.4, ease: 'power3.out' }, 'scene5start+=34')
+    .fromTo('.s5c-line', { scaleX: 0 }, { scaleX: 1, duration: 1.4, ease: 'power2.out' }, 'scene5start+=34')
+    .fromTo('.s5c-st1',  { opacity: 0 }, { opacity: 1, duration: 1.4 }, 'scene5start+=34')
 
-    // Phase 2: Vehicles slide in + Subtext 2 — all together
-    .fromTo('.s5c-st2',     { opacity: 0 }, { opacity: 1, duration: 2 }, 'scene5start+=55')
-    .fromTo('.s5c-train',   { x: '-60vw', opacity: 0 }, { x: 0, opacity: 1, duration: 2.5, ease: 'power3.out' }, 'scene5start+=55')
-    .fromTo('.s5c-walker',  { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 1.8, ease: 'back.out(1.6)' }, 'scene5start+=56')
-    .fromTo('.s5c-bicycle', { x: '60vw', opacity: 0 }, { x: 0, opacity: 1, duration: 2.5, ease: 'power3.out' }, 'scene5start+=55')
+    .fromTo('.s5c-st2',     { opacity: 0 }, { opacity: 1, duration: 1.4 }, 'scene5start+=39')
+    .fromTo('.s5c-train',   { x: '-60vw', opacity: 0 }, { x: 0, opacity: 1, duration: 1.8, ease: 'power3.out' }, 'scene5start+=39')
+    .fromTo('.s5c-walker',  { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 1.4, ease: 'back.out(1.6)' }, 'scene5start+=40')
+    .fromTo('.s5c-bicycle', { x: '60vw', opacity: 0 }, { x: 0, opacity: 1, duration: 1.8, ease: 'power3.out' }, 'scene5start+=39')
 
     // Transition 5C → 5D: SWIPE TO LEFT
-    // 5C slides off-screen left, 5D slides in from off-screen right.
-    // 5D's panel is pre-offset (y: -100vh) so it lines up with 5C's row during the swipe.
-    // Stage Y does NOT move here — the next vertical move is 5D → 5E.
-    // Start soon after the transport reveal so 5C does not create a long dead-scroll pause.
-    .to('.s5c-panel', { x: '-100vw', duration: 4, ease: 'power3.inOut' }, 'scene5start+=64')
-    .to('.s5d-panel', { x: 0,        duration: 4, ease: 'power3.inOut' }, 'scene5start+=64')
+    .to('.s5c-panel', { x: '-100vw', duration: 3, ease: 'power3.inOut' }, 'scene5start+=46')
+    .to('.s5d-panel', { x: 0,        duration: 3, ease: 'power3.inOut' }, 'scene5start+=46')
 
     // ---------- 5D: Sustainable Choices ----------
-    // Content fades in concurrently with the swipe so 5D doesn't arrive empty.
-    .fromTo('.s5d-t1', { opacity: 0 }, { opacity: 1, duration: 2 }, 'scene5start+=66')
-    .fromTo('.s5d-icon', { opacity: 0, x: -30 }, { opacity: 1, x: 0, stagger: 0.4, duration: 2 }, 'scene5start+=68')
-    .fromTo(['.s5d-st1', '.s5d-st2', '.s5d-st3', '.s5d-st4'], { opacity: 0, y: 15 }, { opacity: 1, y: 0, stagger: 0.8, duration: 2 }, 'scene5start+=72')
+    .fromTo('.s5d-t1', { opacity: 0 }, { opacity: 1, duration: 1.4 }, 'scene5start+=48')
+    .fromTo('.s5d-icon', { opacity: 0, x: -30 }, { opacity: 1, x: 0, stagger: 0.3, duration: 1.4 }, 'scene5start+=50')
+    .fromTo(['.s5d-st1', '.s5d-st2', '.s5d-st3', '.s5d-st4'], { opacity: 0, y: 15 }, { opacity: 1, y: 0, stagger: 0.55, duration: 1.4 }, 'scene5start+=53')
 
-    // Transition 5D → 5E (vertical, normal delta of -100vh)
-    // Both 5D and 5E have a -100vh GSAP offset, so they stack tightly during this move.
-    .to('.s5-scroll-stage', { y: '-300vh', duration: 6, ease: 'power2.inOut' }, 'scene5start+=84')
+    // Transition 5D → 5E (vertical)
+    .to('.s5-scroll-stage', { y: '-300vh', duration: 4.5, ease: 'power2.inOut' }, 'scene5start+=62')
 
     // ---------- 5E: Closing ----------
-    .fromTo('.s5e-t1', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 2 }, 'scene5start+=92')
-    .fromTo('.s5e-handshake', { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 2, ease: 'back.out(1.5)' }, 'scene5start+=96')
-    .fromTo('.s5e-t2', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 2 }, 'scene5start+=100')
-    .fromTo('.s5e-t3', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 2 }, 'scene5start+=104')
+    .fromTo('.s5e-t1', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.4 }, 'scene5start+=68')
+    .fromTo('.s5e-handshake', { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 1.6, ease: 'back.out(1.5)' }, 'scene5start+=71')
+    .fromTo('.s5e-t2', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 1.4 }, 'scene5start+=74')
+    .fromTo('.s5e-t3', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 1.4 }, 'scene5start+=77')
 
     // ============================================
     // SCENE 6: CALL TO ACTION
     // ============================================
-    .addLabel('scene6start', 'scene5start+=116')
+    .addLabel('scene6start', 'scene5start+=86')
 
-    // Exit Scene 5
-    .to('.scene-5', { autoAlpha: 0, duration: 3, ease: 'power2.inOut' }, 'scene6start')
+    // Exit Scene 5 with an impact burst instead of a simple fade
+    .to('.s5e-content', { scale: 0.88, filter: 'blur(2px)', opacity: 0.32, duration: 2, ease: 'power2.inOut' }, 'scene6start')
+    .to('.s5-transition-burst', { autoAlpha: 1, duration: 0.1 }, 'scene6start+=0.4')
+    .to('.s5-burst-wash', { opacity: 0.78, scale: 1, rotation: 28, duration: 2.4, ease: 'power3.out' }, 'scene6start+=0.4')
+    .to('.s5-burst-core', { opacity: 0.85, scale: 1, duration: 1.4, ease: 'back.out(1.8)' }, 'scene6start+=0.6')
+    .to('.s5-burst-ring', { opacity: 0.7, scale: 2.8, duration: 2.4, stagger: 0.2, ease: 'power3.out' }, 'scene6start+=0.7')
+    .to('.s5-burst-ray', { opacity: 0.55, scaleY: 1.8, duration: 2.0, stagger: 0.1, ease: 'power2.out' }, 'scene6start+=1')
+    .to('.s5-scroll-stage', { scale: 1.08, filter: 'blur(10px)', duration: 3.2, ease: 'power2.inOut' }, 'scene6start+=1.2')
+    // Burst exits earlier so it clears before REALITY arrives — no more contrast clash
+    .to('.s5-transition-burst', { scale: 6, opacity: 0, duration: 2.2, ease: 'power3.in' }, 'scene6start+=2.4')
+    .to('.scene-5', { autoAlpha: 0, duration: 1.0, ease: 'power2.inOut' }, 'scene6start+=3.6')
 
-    // Enter Scene 6
-    .to('.scene-6', { autoAlpha: 1, duration: 0.1 }, 'scene6start+=1')
-    .to('.s6-bg', { opacity: 1, duration: 3, ease: 'power2.inOut' }, 'scene6start+=1')
+    // Enter Scene 6 — fade cream bg in while the burst is still finishing,
+    // so the handoff feels like the burst dissolves INTO the cream rather than over it.
+    .to('.scene-6', { autoAlpha: 1, duration: 0.1 }, 'scene6start+=3.2')
+    .fromTo('.s6-bg',
+      { opacity: 0, filter: 'brightness(1.8)' },
+      { opacity: 1, filter: 'brightness(1)', duration: 3.2, ease: 'power2.inOut' },
+      'scene6start+=3.2')
 
-    // Phase 1: Text 1 appears, then scroll zooms through REALITY into the next beat
-    .fromTo('.s6-t1', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 2, ease: 'power3.out' }, 'scene6start+=3')
-    .to('.reality-word', { scale: 15, y: '-4vh', duration: 6, ease: 'power2.in' }, 'scene6start+=6')
-    .to('.s6-t1', { autoAlpha: 0, filter: 'blur(10px)', duration: 2.5, ease: 'power2.inOut' }, 'scene6start+=10')
+    // Phase 1: REALITY text appears AFTER burst is fully gone (burst ends ~+=4.6)
+    .fromTo('.s6-t1', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 2, ease: 'power3.out' }, 'scene6start+=5')
+    .to('.reality-word', { scale: 15, y: '-4vh', duration: 6, ease: 'power2.in' }, 'scene6start+=8')
+    // Bg darkens as REALITY consumes the screen — smooth tonal handoff into the forest beat
+    .to('.s6-bg', { backgroundColor: '#1f1a14', duration: 4, ease: 'power2.inOut' }, 'scene6start+=9.5')
+    .to(['.s6-t2', '.s6-t3'], { color: '#e8e2d5', duration: 0.1, ease: 'none' }, 'scene6start+=13')
+    .to('.s6-t1', { autoAlpha: 0, filter: 'blur(10px)', duration: 2.5, ease: 'power2.inOut' }, 'scene6start+=12')
 
     // Text 2, then Text 3, then the before/after image appears
-    .fromTo('.s6-t2', { opacity: 0, y: 28, filter: 'blur(8px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 2, ease: 'power3.out' }, 'scene6start+=13')
-    .fromTo('.s6-t3', { opacity: 0, y: 28, filter: 'blur(8px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 2, ease: 'power3.out' }, 'scene6start+=17')
-    .fromTo('.s6-slider', { opacity: 0, scale: 0.78, y: 46, filter: 'blur(8px)' }, { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)', duration: 3, ease: 'power3.out' }, 'scene6start+=21')
-    .fromTo('.s6-slider-after-wrap', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 6, ease: 'none' }, 'scene6start+=25')
-    .fromTo('.s6-slider-handle', { left: '0%' }, { left: '100%', duration: 6, ease: 'none' }, 'scene6start+=25')
+    .fromTo('.s6-t2', { opacity: 0, y: 28, filter: 'blur(8px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 2, ease: 'power3.out' }, 'scene6start+=15')
+    .fromTo('.s6-t3', { opacity: 0, y: 28, filter: 'blur(8px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 2, ease: 'power3.out' }, 'scene6start+=19')
+    .fromTo('.s6-slider', { opacity: 0, scale: 0.78, y: 46, filter: 'blur(8px) brightness(0.85)' }, { opacity: 1, scale: 1, y: 0, filter: 'blur(0px) brightness(0.85)', duration: 3, ease: 'power3.out' }, 'scene6start+=23')
+    .fromTo('.s6-slider-after-wrap', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 6, ease: 'none' }, 'scene6start+=27')
+    .fromTo('.s6-slider-handle', { left: '0%' }, { left: '100%', duration: 6, ease: 'none' }, 'scene6start+=27')
 
-    // Text 2, Text 3 and image exit before the final line enters
-    .to(['.s6-t2', '.s6-t3', '.s6-slider'], { autoAlpha: 0, y: -24, duration: 2, ease: 'power2.inOut' }, 'scene6start+=32')
-    .to('.s6-phase-1', { opacity: 0, duration: 2 }, 'scene6start+=34')
-    .fromTo('.s6-phase-2', { opacity: 0 }, { opacity: 1, duration: 1.2 }, 'scene6start+=34')
+    // Phase 1 content lifts upward as the cream panel sweeps up from below.
+    // Swipe duration is stretched so it tracks scroll progress 1:1 — user must
+    // scroll the full panel travel before phase-2 fully lands.
+    .to(['.s6-t2', '.s6-t3', '.s6-slider'], { autoAlpha: 0, y: -80, duration: 3, ease: 'power2.in' }, 'scene6start+=34')
+    .to('.s6-phase-2', { yPercent: 0, duration: 6, ease: 'none' }, 'scene6start+=35')
+    .to('.s6-phase-1', { opacity: 0, duration: 0.4 }, 'scene6start+=40.6')
 
     // Final line stencil fill, with US highlighted, then button appears
     .fromTo('.s6-stencil:not(.s6-us-highlight)',
       { opacity: 0, y: 24, backgroundSize: '0% 100%' },
       { opacity: 1, y: 0, backgroundSize: '100% 100%', stagger: 0.2, duration: 2.2, ease: 'power3.out' },
-      'scene6start+=36')
+      'scene6start+=41.4')
     .to('.s6-us-highlight',
       { opacity: 1, scale: 1, y: 0, backgroundSize: '100% 100%', duration: 1.5, ease: 'back.out(1.55)' },
-      'scene6start+=38.4')
+      'scene6start+=43.8')
     .fromTo('.cta-button',
       { opacity: 0, y: 28, scale: 0.92 },
       { opacity: 1, y: 0, scale: 1, duration: 1.25, ease: 'back.out(1.35)' },
-      'scene6start+=40.2')
+      'scene6start+=45.6')
 
   // ============================================
   // SCENE 5A: Scroll lock + Enter-driven window-open transition
@@ -870,11 +1017,15 @@ function initAnimations() {
     }
   })
 
-  // Enter triggers the window-open transition
-  window.addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter') return
+  // Touch devices have no physical Enter — swap the hint copy and accept taps.
+  const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches
+  const hintEl = document.querySelector('.s5a-enter-hint')
+  if (isTouchDevice && hintEl) {
+    hintEl.textContent = 'Tap anywhere to continue'
+  }
+
+  const runS5BTransition = () => {
     if (!s5aLocked || s5aTransitioning) return
-    e.preventDefault()
     s5aLocked = false
     s5aTransitioning = true
 
@@ -916,6 +1067,23 @@ function initAnimations() {
       .to('.s5b-st1',   { opacity: 1, duration: 0.9, ease: 'power2.out' }, '+=0.3')
       .to('.s5b-icons', { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out' }, '+=0.35')
       .to('.s5b-hint',  { opacity: 1, duration: 0.6, ease: 'power2.out' }, '+=0.2')
+  }
+
+  // Enter key (desktop) triggers the window-open transition
+  window.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return
+    if (!s5aLocked || s5aTransitioning) return
+    e.preventDefault()
+    runS5BTransition()
+  })
+
+  // Tap anywhere (touch devices) triggers the same transition.
+  // Ignore taps on the audio toggle so it stays interactive.
+  window.addEventListener('pointerdown', (e) => {
+    if (!isTouchDevice) return
+    if (!s5aLocked || s5aTransitioning) return
+    if (e.target.closest('.audio-toggle')) return
+    runS5BTransition()
   })
 
   // ============================================

@@ -4,11 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>A Rising Reality | Scrollytelling Experience</title>
+    <link rel="icon" type="image/png" href="/icon.png" />
+    <link rel="apple-touch-icon" href="/icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   </head>
   <body>
+    <!-- Floating apple-glass navbar with logo + audio toggle -->
+    <nav class="site-nav" aria-label="Site">
+      <a href="#" class="site-nav-brand" aria-label="Rising Reality home">
+        <img src="/assets/logo.png" alt="Rising Reality" class="site-nav-logo" />
+      </a>
+      <button class="audio-toggle site-nav-audio" type="button" aria-label="Play background music" aria-pressed="false">
+        <span class="audio-toggle-ring" aria-hidden="true"></span>
+        <svg class="audio-icon audio-icon-on" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M4 12v8h6l7 6V6l-7 6H4z" />
+          <path d="M21 11c1.4 1.2 2.2 3 2.2 5s-.8 3.8-2.2 5" />
+          <path d="M24.5 7.8A11 11 0 0 1 28 16a11 11 0 0 1-3.5 8.2" />
+        </svg>
+        <svg class="audio-icon audio-icon-off" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M4 12v8h6l7 6V6l-7 6H4z" />
+          <path d="M22 12l6 8" />
+          <path d="M28 12l-6 8" />
+        </svg>
+      </button>
+    </nav>
+
     <!-- SVG Filter Defs (hidden, used by CSS filter url()) -->
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
       <defs>
@@ -126,7 +148,7 @@
 
         <!-- 3C: Ice Melting -->
         <div class="layer bg-layer s3-melting-bg">
-          <img src="/assets/iceberg_bg.png" alt="Melting Iceberg" class="iceberg-image">
+          <img src="/assets/iceberg_bg.jpg" alt="Melting Iceberg" class="iceberg-image">
         </div>
         <div class="layer s3-melting">
           <!-- Left side text (above thermometer) -->
@@ -346,6 +368,9 @@
           </div>
         </div>
       </section>
+
+      <!-- Horizon-split flash beam used during 3J → 4A transition -->
+      <div class="s3-4-flash" aria-hidden="true"></div>
 
       <!-- ============================================ -->
       <!-- SCENE 4: THE CAUSES                          -->
@@ -646,6 +671,16 @@
           </div>
 
         </div><!-- end s5-scroll-stage -->
+
+        <div class="s5-transition-burst" aria-hidden="true">
+          <span class="s5-burst-wash"></span>
+          <span class="s5-burst-ring ring-1"></span>
+          <span class="s5-burst-ring ring-2"></span>
+          <span class="s5-burst-core"></span>
+          <span class="s5-burst-ray ray-1"></span>
+          <span class="s5-burst-ray ray-2"></span>
+          <span class="s5-burst-ray ray-3"></span>
+        </div>
       </section>
 
       <!-- ============================================ -->
@@ -674,11 +709,25 @@
         <div class="s6-phase s6-phase-2">
           <div class="s6-content s6-cta-content">
             <h2 class="s6-final-line">
-              <span class="s6-stencil">A better future is still possible,</span>
+              <span class="s6-stencil">A better future is still possible</span>
               <span class="s6-stencil">and it begins with</span>
               <span class="s6-stencil s6-us-highlight">US</span>
             </h2>
-            <button class="cta-button" type="button">Be Part of the Change</button>
+            <button class="cta-button" type="button">
+              <span class="cta-label">Be Part of the Change</span>
+              <svg class="cta-border" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <rect class="cta-border-rect"
+                      x="0" y="0" width="100" height="100"
+                      rx="50" ry="50"
+                      fill="none"
+                      vector-effect="non-scaling-stroke" />
+                <rect class="cta-border-rect-draw"
+                      pathLength="1"
+                      x="0" y="0" width="100" height="100"
+                      rx="50" ry="50"
+                      vector-effect="non-scaling-stroke" />
+              </svg>
+            </button>
           </div>
         </div>
       </section>
@@ -697,6 +746,18 @@
         <div class="window-shutter-panel window-shutter-top"></div>
         <div class="window-shutter-panel window-shutter-bottom"></div>
       </div>
+
+      <!-- ============================================ -->
+      <!-- Fixed UI: custom scroll progress + audio      -->
+      <!-- ============================================ -->
+      <div class="story-scrollbar" aria-hidden="true">
+        <div class="story-scrollbar-track">
+          <div class="story-scrollbar-fill"></div>
+          <div class="story-scrollbar-thumb"></div>
+        </div>
+      </div>
+
+      <audio class="bg-audio" src="/BG-Audio.mp3" preload="auto" autoplay loop></audio>
 
     </main>
 
