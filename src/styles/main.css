@@ -410,8 +410,8 @@ h1, h2, h3, h4, h5, h6, .hero-title {
 .s3c-left {
   position: absolute;
   left: 12vw;
-  top: 25%;
-  /* Removed max-width to prevent forced wrapping before the <br> */
+  top: 10vh;
+  max-width: clamp(320px, 50vw, 720px); /* Cap width so title stays clear of the centered thermometer */
 }
 
 .s3c-right {
@@ -2405,8 +2405,8 @@ h1, h2, h3, h4, h5, h6, .hero-title {
 /* RESPONSIVE STORY PASS                        */
 /* ============================================ */
 
-/* ---- Mid-laptop range (MBP 13"/14", standard HD laptops) ---- */
-@media (max-width: 1366px) {
+/* ---- Mid-laptop range (MBP 13"/14"/15", 1440 MBP, standard HD laptops) ---- */
+@media (max-width: 1440px) {
   /* Let bold titles wrap instead of forcing one line that overflows */
   .s3b-t1,
   .s3c-t1,
@@ -2435,11 +2435,11 @@ h1, h2, h3, h4, h5, h6, .hero-title {
     width: clamp(130px, 14vw, 220px);
   }
 
-  /* Scene 3C: keep left text compact + above thermometer's mid-vertical zone */
+  /* Scene 3C: keep left text compact + clear of thermometer's mid-vertical zone */
   .s3c-left {
-    top: 14vh;
+    top: 8vh;
     left: clamp(5vw, 8vw, 10vw);
-    max-width: clamp(280px, 55vw, 640px);
+    max-width: clamp(280px, 48vw, 580px);
   }
   .s3c-t1 {
     font-size: clamp(1.5rem, 2.6vw, 2.4rem);
