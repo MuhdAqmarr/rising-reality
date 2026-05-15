@@ -333,6 +333,15 @@ function initAnimations() {
     ease: 'sine.inOut'
   })
 
+  // Scene 5 background — continuously shifting gradient (emerald → cyan → blue → forest)
+  gsap.to('.s5-bg', {
+    backgroundPosition: '100% 100%',
+    duration: 6,
+    repeat: -1,
+    yoyo: true,
+    ease: 'sine.inOut'
+  })
+
   // Scene 5C vehicles (PNG images) — feel alive "in place" without sliding off-spot.
   // Scrub uses x/scale for entry, ambient uses y/rotation here — no transform conflicts.
 
@@ -944,8 +953,6 @@ function initAnimations() {
     .fromTo('.s6-t2', { opacity: 0, y: 28, filter: 'blur(8px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 2, ease: 'power3.out' }, 'scene6start+=15')
     .fromTo('.s6-t3', { opacity: 0, y: 28, filter: 'blur(8px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 2, ease: 'power3.out' }, 'scene6start+=19')
     .fromTo('.s6-slider', { opacity: 0, scale: 0.78, y: 46, filter: 'blur(8px) brightness(0.85)' }, { opacity: 1, scale: 1, y: 0, filter: 'blur(0px) brightness(0.85)', duration: 3, ease: 'power3.out' }, 'scene6start+=23')
-    .fromTo('.s6-slider-after-wrap', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 6, ease: 'none' }, 'scene6start+=27')
-    .fromTo('.s6-slider-handle', { left: '0%' }, { left: '100%', duration: 6, ease: 'none' }, 'scene6start+=27')
 
     // Phase 1 content lifts upward as the cream panel sweeps up from below.
     // Swipe duration is stretched so it tracks scroll progress 1:1 — user must
@@ -978,6 +985,7 @@ function initAnimations() {
 
   let s5aLocked = false
   let s5aTransitioning = false
+  let navIgnoreLock = false
 
   const showHint = () => gsap.to('.s5a-enter-hint', { opacity: 1, duration: 0.6, ease: 'power2.out' })
 
@@ -999,15 +1007,16 @@ function initAnimations() {
     showHint()
   }
 
-  // Watch scrub time; lock when entering the 5A settle range
-  lenis.on('scroll', () => {
-    if (s5aLocked || s5aTransitioning) return
+  const maybeLockAt5A = () => {
+    if (s5aLocked || s5aTransitioning || navIgnoreLock) return
     const lockTime = masterTl.labels['s5a_lock']
-    const exitTime = masterTl.labels['s5a_lock'] + 8 // safety upper bound
     if (lockTime == null) return
     const now = masterTl.time()
-    if (now >= lockTime && now <= exitTime) lockAt5A()
-  })
+    if (now >= lockTime && now <= lockTime + 8) lockAt5A()
+  }
+
+  // Watch scrub time; lock when entering the 5A settle range
+  lenis.on('scroll', maybeLockAt5A)
 
   // Prevent keyboard scroll while locked
   const blockedScrollKeys = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', ' ', 'Home', 'End', 'Spacebar']
@@ -1101,11 +1110,172 @@ function initAnimations() {
     })
   })
 
+  // ============================================
+  // SCENE 6: CTA BUTTON → JUMPS BACK TO SCENE 5
+  // Reuses the same label+offset pattern as chapter dots.
+  // ============================================
+  const ctaButton = document.querySelector('.cta-button')
+  if (ctaButton) {
+    ctaButton.addEventListener('click', () => {
+      const st = masterTl.scrollTrigger
+      if (!st) return
+      const labelName = ctaButton.dataset.chapterLabel || 'scene5start'
+      const offset = parseFloat(ctaButton.dataset.chapterOffset || '0')
+      const baseTime = masterTl.labels[labelName]
+      if (baseTime == null) return
+      const time = baseTime + offset
+      const progress = time / masterTl.duration()
+      const targetY = st.start + (st.end - st.start) * progress
+      navIgnoreLock = true
+      if (s5aLocked) {
+        s5aLocked = false
+        lenis.start()
+      }
+      gsap.to('.s5a-enter-hint', { opacity: 0, duration: 0.3, overwrite: true })
+      lenis.scrollTo(targetY, {
+        duration: 1.6,
+        force: true,
+        onComplete: () => {
+          navIgnoreLock = false
+          maybeLockAt5A()
+        }
+      })
+    })
+  }
+
+  // ============================================
+  // SCENE 6: BEFORE/AFTER SLIDER (USER-DRAGGABLE)
+  // Replaces the scroll-driven clipPath scrub — user controls the comparison.
+  // ============================================
+  const slider = document.querySelector('#s6-slider')
+  if (slider) {
+    const afterWrap = slider.querySelector('.s6-slider-after-wrap')
+    const handle = slider.querySelector('.s6-slider-handle')
+    let dragging = false
+    let activePointerId = null
+
+    const setSliderPosition = (pct) => {
+      const clamped = Math.min(Math.max(pct, 0), 100)
+      afterWrap.style.clipPath = `inset(0 ${100 - clamped}% 0 0)`
+      handle.style.left = `${clamped}%`
+    }
+
+    const updateFromClientX = (clientX) => {
+      const rect = slider.getBoundingClientRect()
+      if (rect.width === 0) return
+      const pct = ((clientX - rect.left) / rect.width) * 100
+      setSliderPosition(pct)
+    }
+
+    slider.addEventListener('pointerdown', (e) => {
+      dragging = true
+      activePointerId = e.pointerId
+      slider.classList.add('is-dragging')
+      updateFromClientX(e.clientX)
+      e.preventDefault()
+      e.stopPropagation()
+    })
+
+    // Listen on document so drag tracks even if cursor leaves the slider
+    document.addEventListener('pointermove', (e) => {
+      if (!dragging) return
+      if (activePointerId !== null && e.pointerId !== activePointerId) return
+      updateFromClientX(e.clientX)
+    })
+
+    const stopDrag = () => {
+      if (!dragging) return
+      dragging = false
+      activePointerId = null
+      slider.classList.remove('is-dragging')
+    }
+    document.addEventListener('pointerup', stopDrag)
+    document.addEventListener('pointercancel', stopDrag)
+  }
+
+  // ============================================
+  // CHAPTER NAVIGATION DOTS
+  // Position each dot along the scrollbar based on its label time in the master
+  // timeline, then wire clicks to jump there via Lenis.
+  // ============================================
+  const chapterDots = document.querySelectorAll('.story-chapter-dot')
+
+  // Compute target timeline time for a dot (label time + offset)
+  const dotTargetTime = (dot) => {
+    const labelName = dot.dataset.chapterLabel
+    const offset = parseFloat(dot.dataset.chapterOffset || '0')
+    const baseTime = masterTl.labels[labelName]
+    if (baseTime == null) return null
+    return baseTime + offset
+  }
+
+  const dotTargetScrollY = (dot) => {
+    const st = masterTl.scrollTrigger
+    if (!st) return 0
+    const time = dotTargetTime(dot)
+    if (time == null) return 0
+    const progress = time / masterTl.duration()
+    return st.start + (st.end - st.start) * progress
+  }
+
+  // Position each dot at its target moment on the scrollbar
+  const positionChapterDots = () => {
+    chapterDots.forEach(dot => {
+      const time = dotTargetTime(dot)
+      if (time == null) return
+      const progress = time / masterTl.duration()
+      const pct = Math.min(Math.max(progress * 100, 0), 100)
+      dot.style.setProperty('--chapter-pos', `${pct}%`)
+    })
+  }
+
+  positionChapterDots()
+
+  chapterDots.forEach(dot => {
+    // Stop pointerdown so the scrollbar track's scrub-drag doesn't fire underneath
+    dot.addEventListener('pointerdown', (e) => e.stopPropagation())
+
+    dot.addEventListener('click', (e) => {
+      e.stopPropagation()
+      const targetY = dotTargetScrollY(dot)
+      // Block lock-re-entry BEFORE touching lenis so no in-flight scroll re-triggers it
+      navIgnoreLock = true
+      // Release the 5A lock if user is jumping somewhere else
+      if (s5aLocked) {
+        s5aLocked = false
+        lenis.start()
+      }
+      // Always fade — covers any state where hint is visible but s5aLocked drifted
+      gsap.to('.s5a-enter-hint', { opacity: 0, duration: 0.3, overwrite: true })
+      lenis.scrollTo(targetY, {
+        duration: 1.4,
+        force: true,
+        onComplete: () => {
+          navIgnoreLock = false
+          maybeLockAt5A()
+        }
+      })
+    })
+  })
+
+  // Highlight "passed" chapters as user scrolls
+  const updateChapterStates = () => {
+    const current = masterTl.time()
+    chapterDots.forEach(dot => {
+      const time = dotTargetTime(dot)
+      if (time == null) return
+      dot.classList.toggle('is-passed', current >= time)
+    })
+  }
+  lenis.on('scroll', updateChapterStates)
+  updateChapterStates()
+
   let resizeTimer;
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
       ScrollTrigger.refresh();
+      positionChapterDots();
     }, 250);
   });
 }
