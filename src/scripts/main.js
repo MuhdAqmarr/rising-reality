@@ -1136,7 +1136,7 @@ function initAnimations() {
         force: true,
         onComplete: () => {
           navIgnoreLock = false
-          maybeLockAt5A()
+          lockAt5A()
         }
       })
     })
