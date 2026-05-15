@@ -773,10 +773,11 @@ function initAnimations() {
 
     // MASTER STAGE SCROLLING
     // We move the stage from y: 0 to y: -500vh (total 6 panels)
-    // This happens over the entire duration of Scene 4
+    // Tighter duration so each panel takes ~10 timeline units (was 20) — keeps
+    // gaps between scene content closer together (matches the 4A→4B pacing).
     .to('.s4-scroll-stage', {
-      y: '-500vh',
-      duration: 100, // Total duration for all 6 panels
+      y: '-400vh', // Stage 500vh (C/D/E overlap -30vh, F overlap -10vh)
+      duration: 60,
       ease: 'none'
     }, 'scene4start+=2')
 
@@ -788,17 +789,13 @@ function initAnimations() {
     }, 'scene4start')
     .to('#s4-line-path', {
       strokeDashoffset: 0,
-      duration: 94, // Adjusted to match remaining scroll
+      duration: 56, // Match shortened stage scroll
       ease: 'none'
     }, 'scene4start+=6')
 
-    // Panel timing (stage scroll -500vh over 100 units → 20 units per panel):
-    //   4A enter=+2 / center=+2  / exit=+22
-    //   4B enter=+2 / center=+22 / exit=+42
-    //   4C enter=+22 / center=+42 / exit=+62
-    //   4D enter=+42 / center=+62 / exit=+82
-    //   4E enter=+62 / center=+82 / exit=+102
-    //   4F enter=+82 / center=+102
+    // Panel timing — uniform 2.5-unit gap between scenes (like 4A→4B):
+    //   4A: +0–+5.5  / 4B: +8–+15.6 / 4C: +18–+31.5
+    //   4D: +34–+41.5 / 4E: +44–+53.2 / 4F: +56–+62
 
     // ---------- 4A: Opening ----------
     .set('.s4a-t1', { opacity: 1, y: 0 }, 'scene4start')
@@ -815,46 +812,40 @@ function initAnimations() {
       { opacity: 0, y: 0, scale: 0.5 },
       { opacity: 0.7, y: -100, scale: 1.5, duration: 2, stagger: 0.25, repeat: 1, ease: 'power1.out' },
       'scene4start+=16')
-    .to('.dot-b', { opacity: 1, scale: 1.5, duration: 0.5 }, 'scene4start+=22')
+    .to('.dot-b', { opacity: 1, scale: 1.5, duration: 0.5 }, 'scene4start+=17')
 
-    // ---------- 4C: Deforestation ----------
-    // 1. Text 1 + Subtext 1 appear TOGETHER
-    .fromTo('.s4c-t1', { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 1.5, ease: 'power3.out' }, 'scene4start+=20')
-    .fromTo('.s4c-t2', { opacity: 0 }, { opacity: 1, duration: 1.5 }, 'scene4start+=23')
-    // 2. Trees appear one by one
-    .fromTo('.s4c-tree', { opacity: 0, y: 40, scaleY: 0 }, { opacity: 1, y: 0, scaleY: 1, stagger: 0.12, duration: 1.5, ease: 'back.out(1.5)' }, 'scene4start+=26')
-    // 3. Trees disappear in groups of 2-3, buildings replace them (faster swap)
-    .to('.s4c-tree', { opacity: 0, scaleY: 0, stagger: { amount: 2, from: 'start' }, duration: 1, ease: 'power2.in', transformOrigin: 'bottom center' }, 'scene4start+=29')
-    .fromTo('.s4c-building', { opacity: 0, y: 30 }, { opacity: 1, y: 0, stagger: { amount: 2, from: 'start' }, duration: 1, ease: 'back.out(1.4)' }, 'scene4start+=29.4')
-    // 4. Subtext 2 appears AFTER deforestation completes
-    .fromTo('.s4c-t3', { opacity: 0 }, { opacity: 1, duration: 1.5 }, 'scene4start+=32')
-    .to('.dot-c', { opacity: 1, scale: 1.5, duration: 0.5 }, 'scene4start+=36')
+    // ---------- 4C: Deforestation ----------  (compressed: end +25, before panel top at +27.5)
+    .fromTo('.s4c-t1', { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 1.2, ease: 'power3.out' }, 'scene4start+=18')
+    .fromTo('.s4c-t2', { opacity: 0 }, { opacity: 1, duration: 1.2 }, 'scene4start+=19')
+    .fromTo('.s4c-tree', { opacity: 0, y: 40, scaleY: 0 }, { opacity: 1, y: 0, scaleY: 1, stagger: 0.07, duration: 1.2, ease: 'back.out(1.5)' }, 'scene4start+=20')
+    .to('.s4c-tree', { opacity: 0, scaleY: 0, stagger: { amount: 1.2, from: 'start' }, duration: 0.6, ease: 'power2.in', transformOrigin: 'bottom center' }, 'scene4start+=22')
+    .fromTo('.s4c-building', { opacity: 0, y: 30 }, { opacity: 1, y: 0, stagger: { amount: 1.2, from: 'start' }, duration: 0.6, ease: 'back.out(1.4)' }, 'scene4start+=22.2')
+    .fromTo('.s4c-t3', { opacity: 0 }, { opacity: 1, duration: 1 }, 'scene4start+=24')
+    .to('.dot-c', { opacity: 1, scale: 1.5, duration: 0.5 }, 'scene4start+=26')
 
-    // ---------- 4D: Urban & Industrial ----------
-    // Text 1 + Subtext 1 appear at the same time
-    .fromTo('.s4d-t1', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.5, ease: 'power3.out' }, 'scene4start+=48')
-    .fromTo('.s4d-t2', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.5, ease: 'power3.out' }, 'scene4start+=48')
-    .fromTo('.s4d-skyline', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 2, ease: 'power2.out' }, 'scene4start+=51')
-    // Subtext 2 appears later with highlight colour
-    .fromTo('.s4d-t3', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 1.5, ease: 'power2.out' }, 'scene4start+=54')
-    .to('.dot-d', { opacity: 1, scale: 1.5, duration: 0.5 }, 'scene4start+=62')
+    // ---------- 4D: Urban & Industrial ----------  (compressed: end +33.5, before +38)
+    .fromTo('.s4d-t1', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' }, 'scene4start+=28')
+    .fromTo('.s4d-t2', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' }, 'scene4start+=28')
+    .fromTo('.s4d-skyline', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.5, ease: 'power2.out' }, 'scene4start+=30')
+    .fromTo('.s4d-t3', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 1.5, ease: 'power2.out' }, 'scene4start+=32')
+    .to('.dot-d', { opacity: 1, scale: 1.5, duration: 0.5 }, 'scene4start+=34')
 
-    // ---------- 4E: Everyday Lifestyle ----------
-    .fromTo('.s4e-t1', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 1.5, ease: 'power3.out' }, 'scene4start+=68')
-    .fromTo('.s4e-t2', { opacity: 0 }, { opacity: 1, duration: 1.5 }, 'scene4start+=70')
-    .fromTo('.s4e-icon', { opacity: 0, scale: 0, rotate: -20 }, { opacity: 1, scale: 1, rotate: 0, stagger: 0.18, duration: 1.2, ease: 'back.out(1.7)' }, 'scene4start+=72')
-    .fromTo('.s4e-list p', { opacity: 0, x: -20 }, { opacity: 1, x: 0, stagger: 0.25, duration: 1.2 }, 'scene4start+=75')
-    .to('.dot-e', { opacity: 1, scale: 1.5, duration: 0.5 }, 'scene4start+=82')
+    // ---------- 4E: Everyday Lifestyle ----------  (compressed: end +42.5, before +48.5)
+    .fromTo('.s4e-t1', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 1.2, ease: 'power3.out' }, 'scene4start+=36.5')
+    .fromTo('.s4e-t2', { opacity: 0 }, { opacity: 1, duration: 1.2 }, 'scene4start+=37.5')
+    .fromTo('.s4e-icon', { opacity: 0, scale: 0, rotate: -20 }, { opacity: 1, scale: 1, rotate: 0, stagger: 0.15, duration: 1, ease: 'back.out(1.7)' }, 'scene4start+=38.5')
+    .fromTo('.s4e-list p', { opacity: 0, x: -20 }, { opacity: 1, x: 0, stagger: 0.18, duration: 1 }, 'scene4start+=40.5')
+    .to('.dot-e', { opacity: 1, scale: 1.5, duration: 0.5 }, 'scene4start+=43')
 
-    // ---------- 4F: Closing ----------
-    .fromTo('.s4f-t1', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 2, ease: 'power2.out' }, 'scene4start+=88')
-    .fromTo('.s4f-t2', { opacity: 0 }, { opacity: 1, duration: 2 }, 'scene4start+=92')
-    .to('.dot-f', { opacity: 1, scale: 1.5, duration: 0.5 }, 'scene4start+=96')
+    // ---------- 4F: Closing ----------  (more breathing — 4F gets extra time)
+    .fromTo('.s4f-t1', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 2, ease: 'power2.out' }, 'scene4start+=50')
+    .fromTo('.s4f-t2', { opacity: 0 }, { opacity: 1, duration: 2 }, 'scene4start+=54')
+    .to('.dot-f', { opacity: 1, scale: 1.5, duration: 0.5 }, 'scene4start+=57')
 
     // ============================================
     // SCENE 5: WHAT WE CAN DO
     // ============================================
-    .addLabel('scene5start', 'scene4start+=105')
+    .addLabel('scene5start', 'scene4start+=65')
 
     // ZOOM INTO LINE TRANSITION: Grow line stroke-width to fill viewport with black,
     // hide other 4F content, then fade in dark Scene 5 bg seamlessly.
@@ -1026,12 +1017,20 @@ function initAnimations() {
     }
   })
 
-  // Touch devices have no physical Enter — swap the hint copy and accept taps.
-  const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches
+  // Mobile-sized coarse-pointer screens use tap copy/interaction.
+  const mobileViewportQuery = window.matchMedia('(max-width: 720px)')
+  const coarsePointerQuery = window.matchMedia('(hover: none) and (pointer: coarse)')
+  const isMobileTapMode = () => mobileViewportQuery.matches && coarsePointerQuery.matches
   const hintEl = document.querySelector('.s5a-enter-hint')
-  if (isTouchDevice && hintEl) {
-    hintEl.textContent = 'Tap anywhere to continue'
+  const updateS5AInteractionHint = () => {
+    if (!hintEl) return
+    hintEl.innerHTML = isMobileTapMode()
+      ? 'Tap anywhere to continue'
+      : 'Press <kbd>Enter</kbd> to continue'
   }
+  updateS5AInteractionHint()
+  mobileViewportQuery.addEventListener?.('change', updateS5AInteractionHint)
+  coarsePointerQuery.addEventListener?.('change', updateS5AInteractionHint)
 
   const runS5BTransition = () => {
     if (!s5aLocked || s5aTransitioning) return
@@ -1086,10 +1085,10 @@ function initAnimations() {
     runS5BTransition()
   })
 
-  // Tap anywhere (touch devices) triggers the same transition.
+  // Tap anywhere in mobile view triggers the same transition.
   // Ignore taps on the audio toggle so it stays interactive.
   window.addEventListener('pointerdown', (e) => {
-    if (!isTouchDevice) return
+    if (!isMobileTapMode()) return
     if (!s5aLocked || s5aTransitioning) return
     if (e.target.closest('.audio-toggle')) return
     runS5BTransition()

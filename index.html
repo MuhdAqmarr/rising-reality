@@ -386,19 +386,19 @@
             
             <path id="s4-line-path"
               d="
-                M 530 640
-                L 900 640 Q 1000 640 1000 740
-                L 1000 1300
-                Q 1000 1400 900 1400 L 100 1400 Q 0 1400 0 1500
-                L 0 2300
-                Q 0 2400 100 2400 L 900 2400 Q 1000 2400 1000 2500
-                L 1000 3300
-                Q 1000 3400 900 3400 L 100 3400 Q 0 3400 0 3500
-                L 0 4300
-                Q 0 4400 100 4400 L 900 4400 Q 1000 4400 1000 4500
-                L 1000 4900
-                Q 1000 5000 900 5000 L 500 5000 Q 500 5100 500 5200
-                L 500 5500
+                M 530 960
+                L 900 960 Q 1000 960 1000 1060
+                L 1000 1700
+                Q 1000 1800 900 1800 L 100 1800 Q 0 1800 0 1900
+                L 0 2540
+                Q 0 2640 100 2640 L 900 2640 Q 1000 2640 1000 2740
+                L 1000 3380
+                Q 1000 3480 900 3480 L 100 3480 Q 0 3480 0 3580
+                L 0 4220
+                Q 0 4320 100 4320 L 900 4320 Q 1000 4320 1000 4420
+                L 1000 4860
+                Q 1000 4960 900 4960 L 600 4960 Q 500 4960 500 5060
+                L 500 5400
               "
               fill="none"
               stroke="#1a1a1a"
@@ -408,13 +408,14 @@
               vector-effect="non-scaling-stroke"
             />
 
-            <!-- Dots at the center of each panel (approx) -->
-            <circle class="s4-dot dot-a" cx="530" cy="640" r="20" fill="#1a1a1a"/>
-            <circle class="s4-dot dot-b" cx="1000" cy="1500" r="20" fill="#1a1a1a"/>
-            <circle class="s4-dot dot-c" cx="0" cy="2500" r="20" fill="#1a1a1a"/>
-            <circle class="s4-dot dot-d" cx="1000" cy="3500" r="20" fill="#1a1a1a"/>
-            <circle class="s4-dot dot-e" cx="0" cy="4500" r="20" fill="#1a1a1a"/>
-            <circle class="s4-dot dot-f" cx="500" cy="5500" r="20" fill="#1a1a1a"/>
+            <!-- Dots at each panel center (SVG y = stage_vh × 12, since 6000 viewBox = 500vh).
+                 dot-a is placed at the human icon's vertical center (panel-y ~80%). -->
+            <circle class="s4-dot dot-a" cx="530" cy="960" r="20" fill="#1a1a1a"/>
+            <circle class="s4-dot dot-b" cx="1000" cy="1800" r="20" fill="#1a1a1a"/>
+            <circle class="s4-dot dot-c" cx="0" cy="2640" r="20" fill="#1a1a1a"/>
+            <circle class="s4-dot dot-d" cx="1000" cy="3480" r="20" fill="#1a1a1a"/>
+            <circle class="s4-dot dot-e" cx="0" cy="4320" r="20" fill="#1a1a1a"/>
+            <circle class="s4-dot dot-f" cx="500" cy="5060" r="20" fill="#1a1a1a"/>
           </svg>
 
           <!-- ===== CONTENT BLOCKS — stacked vertically, each 100vh tall ===== -->
@@ -502,17 +503,19 @@
             <div class="s4-content s4e-content">
               <h2 class="s4e-t1">OUR EVERYDAY LIFESTYLE</h2>
               <p class="s4e-t2">also play a role</p>
-              <div class="s4e-icons">
-                <img class="s4e-icon" src="/assets/kilat.png" alt="Energy" />
-                <img class="s4e-icon" src="/assets/car2.png" alt="Travel" />
-                <img class="s4e-icon" src="/assets/shopping-bag.png" alt="Consumption" />
-                <img class="s4e-icon" src="/assets/bin.png" alt="Waste" />
-              </div>
-              <div class="s4e-list">
-                <p>The energy we use.</p>
-                <p>The way we travel.</p>
-                <p>The things we consume.</p>
-                <p>The waste we produce.</p>
+              <div class="s4e-pairs">
+                <div class="s4e-icons">
+                  <img class="s4e-icon" src="/assets/kilat.png" alt="Energy" />
+                  <img class="s4e-icon" src="/assets/car2.png" alt="Travel" />
+                  <img class="s4e-icon" src="/assets/bin.png" alt="Waste" />
+                  <img class="s4e-icon" src="/assets/shopping-bag.png" alt="Consumption" />
+                </div>
+                <div class="s4e-list">
+                  <p>The energy we use.</p>
+                  <p>The way we travel.</p>
+                  <p>The things we consume.</p>
+                  <p>The waste we produce.</p>
+                </div>
               </div>
             </div>
           </div>

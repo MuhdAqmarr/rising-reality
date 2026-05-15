@@ -410,7 +410,7 @@ h1, h2, h3, h4, h5, h6, .hero-title {
 .s3c-left {
   position: absolute;
   left: 12vw;
-  top: 10vh;
+  top: 16vh;
   max-width: clamp(320px, 50vw, 720px); /* Cap width so title stays clear of the centered thermometer */
 }
 
@@ -874,10 +874,10 @@ h1, h2, h3, h4, h5, h6, .hero-title {
 
 .s3f-bottom-text {
   position: absolute;
-  bottom: 22vh;
-  left: 4vw;
+  bottom: 38vh;
+  left: clamp(14vw, 20vw, 26vw);
   text-align: left;
-  max-width: 50vw;
+  max-width: clamp(480px, 56vw, 720px); /* Wide enough so the <br> stays the only break (2 lines) */
   z-index: 4;
 }
 
@@ -1011,7 +1011,7 @@ h1, h2, h3, h4, h5, h6, .hero-title {
 
 .s3g-bottom-text {
   position: absolute;
-  bottom: 8vh;
+  bottom: 22vh;
   left: 0;
   width: 100%;
   text-align: center;
@@ -1305,18 +1305,20 @@ h1, h2, h3, h4, h5, h6, .hero-title {
   will-change: transform, opacity;
 }
 
-/* Tall container that GSAP scrolls upward */
+/* Tall container that GSAP scrolls upward.
+   A→B keeps a full 100vh gap. C/D/E overlap previous by 30vh (some breathing).
+   F overlaps by only 10vh (extra breathing for the closing beat).
+   Total: 100 + 100 + 70×3 + 90 = 500vh. */
 .s4-scroll-stage {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 600vh; /* 6 scenes * 100vh */
+  height: 500vh;
   z-index: 5;
   will-change: transform;
 }
 
-/* Each sub-scene panel is exactly one viewport tall */
 .s4-panel {
   position: relative;
   width: 100%;
@@ -1325,6 +1327,18 @@ h1, h2, h3, h4, h5, h6, .hero-title {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+
+/* C/D/E: -30vh overlap (panel-center gap = 70vh) */
+.s4c-panel,
+.s4d-panel,
+.s4e-panel {
+  margin-top: -30vh;
+}
+
+/* F: only -10vh overlap (panel-center gap = 90vh — extra breathing) */
+.s4f-panel {
+  margin-top: -10vh;
 }
 
 /* The master SVG line — spans the entire 600vh stage */
@@ -1366,13 +1380,15 @@ h1, h2, h3, h4, h5, h6, .hero-title {
 }
 
 /* ---- 4A Opening ---- */
-.s4a-content { align-items: center; text-align: center; }
+/* translateY compensates for the scroll-stage upward shift at the moment 4A is fully visible,
+   so the title + subtitle + human icon land near viewport center instead of upper-mid. */
+.s4a-content { align-items: center; text-align: center; transform: translateY(20vh); }
 .s4a-t1 { font-size: clamp(1.8rem, 3.5vw, 4.5rem); margin-bottom: 1.5rem; font-weight: 800; line-height: 1.1; }
-.s4a-t2 { font-size: clamp(1.1rem, 1.8vw, 2.2rem); font-weight: 500; margin-bottom: 1rem; }
+.s4a-t2 { font-size: clamp(1.1rem, 1.8vw, 2.2rem); font-weight: 500; margin-top: 1.5rem; margin-bottom: 1rem; }
 .s4a-human { width: clamp(70px, 7vw, 110px); height: auto; margin-top: 1rem; opacity: 0; }
 
-/* Push tall panels' content to upper half so it sits above the horizontal line (at 60vh).
-   4A (human silhouette) stays centered — unchanged. */
+/* Anchor content to the top of each panel — panel overlap (above) provides the
+   tightness; content position stays simple. */
 .s4b-content,
 .s4c-content,
 .s4d-content,
@@ -1387,12 +1403,12 @@ h1, h2, h3, h4, h5, h6, .hero-title {
 .s4b-t2 { font-size: clamp(1rem, 1.4vw, 1.5rem); max-width: 400px; margin-bottom: 0.8rem; }
 .s4b-t3 { font-size: clamp(1.1rem, 1.5vw, 1.7rem); font-weight: 600; max-width: 600px; margin-bottom: 0; }
 .s4b-scene { display: flex; align-items: flex-end; gap: 4vw; margin-top: 2vh; position: relative; }
-.s4b-icon { height: clamp(80px, 10vw, 140px); width: auto; display: block; object-fit: contain; object-position: bottom; }
+.s4b-icon { height: clamp(64px, 8vw, 116px); width: auto; display: block; object-fit: contain; object-position: bottom; }
+.s4b-icon.s4b-car { height: clamp(44px, 5.5vw, 80px); }
 .s4b-smoke { position: absolute; width: 20px; height: 20px; border-radius: 50%; background: #999; opacity: 0; }
 
 /* ---- 4C Deforestation ---- */
-.s4c-panel { overflow: visible; }
-.s4c-content { align-items: flex-start; text-align: left; padding-left: 8vw; margin-top: -15vh; }
+.s4c-content { align-items: flex-start; text-align: left; padding-left: 8vw; }
 .s4c-t1 { font-size: clamp(2.2rem, 4.5vw, 5rem); font-weight: 900; margin-bottom: 0.8rem; }
 .s4c-t2, .s4c-t3 { font-size: clamp(1rem, 1.4vw, 1.5rem); max-width: 500px; margin-bottom: 0.6rem; }
 .s4c-stage { position: relative; width: 100%; height: clamp(80px, 10vw, 140px); margin-top: 1.5vh; }
@@ -1426,18 +1442,30 @@ h1, h2, h3, h4, h5, h6, .hero-title {
 .s4e-content { align-items: flex-start; text-align: left; padding-left: 8vw; }
 .s4e-t1 { font-size: clamp(2rem, 4vw, 4.5rem); margin-bottom: 0.4rem; }
 .s4e-t2 { font-size: clamp(1rem, 1.5vw, 1.7rem); margin-bottom: 1rem; font-weight: 600; }
-.s4e-icons { display: flex; gap: 3vw; margin-bottom: 1rem; }
-.s4e-icon { width: clamp(42px, 4.5vw, 60px); height: clamp(42px, 4.5vw, 60px); object-fit: contain; display: block; }
-.s4e-list p { font-size: clamp(1rem, 1.3vw, 1.4rem); margin-bottom: 0.3rem; font-weight: 500; }
+.s4e-pairs {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  margin-top: 1rem;
+}
+.s4e-icons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.8rem, 1.5vw, 1.8rem);
+  flex-shrink: 0;
+}
+.s4e-icon { width: clamp(56px, 6vw, 84px); height: clamp(56px, 6vw, 84px); object-fit: contain; display: block; }
+.s4e-list { display: flex; flex-direction: column; gap: clamp(0.4rem, 0.8vw, 0.8rem); }
+.s4e-list p { font-size: clamp(1rem, 1.3vw, 1.4rem); margin: 0; font-weight: 500; }
 
 /* ---- 4F Closing ---- */
 .s4f-panel { overflow: visible; }
-.s4f-content { align-items: center; text-align: center; align-self: flex-start; margin-top: -20vh; }
+.s4f-content { align-items: center; text-align: center; align-self: flex-start; }
 .s4f-t1 { font-size: clamp(1.8rem, 3vw, 3.5rem); margin-bottom: 1.5rem; text-transform: none; }
 .s4f-t2 {
   font-size: clamp(1.2rem, 2vw, 2.2rem);
   font-weight: 500;
-  margin-top: 42vh;
+  margin-top: 15vh;
   background: #faf6ed;
   padding: 0.5rem 1.2rem;
   display: inline-block;
@@ -2407,6 +2435,14 @@ h1, h2, h3, h4, h5, h6, .hero-title {
 
 /* ---- Mid-laptop range (MBP 13"/14"/15", 1440 MBP, standard HD laptops) ---- */
 @media (max-width: 1440px) {
+  /* Scene 2: shrink the heavy uppercase text so it doesn't feel oversized */
+  .s2-text.t2 {
+    font-size: clamp(1.7rem, 2.7vw, 3rem);
+  }
+  .s2-text.t3 p {
+    font-size: clamp(1.3rem, 2vw, 2.4rem);
+  }
+
   /* Let bold titles wrap instead of forcing one line that overflows */
   .s3b-t1,
   .s3c-t1,
@@ -2437,7 +2473,7 @@ h1, h2, h3, h4, h5, h6, .hero-title {
 
   /* Scene 3C: keep left text compact + clear of thermometer's mid-vertical zone */
   .s3c-left {
-    top: 8vh;
+    top: 14vh;
     left: clamp(5vw, 8vw, 10vw);
     max-width: clamp(280px, 48vw, 580px);
   }
@@ -2462,9 +2498,12 @@ h1, h2, h3, h4, h5, h6, .hero-title {
     max-width: 80vw;
   }
   .s3f-bottom-text {
-    bottom: 24vh;
-    left: clamp(3vw, 5vw, 6vw);
-    max-width: clamp(260px, 50vw, 540px);
+    bottom: 38vh;
+    left: clamp(12vw, 18vw, 24vw);
+    max-width: clamp(440px, 54vw, 660px);
+  }
+  .s3f-t3 {
+    font-size: clamp(1.2rem, 1.7vw, 2rem); /* Slightly tighter so line 1 fits without forced wrap */
   }
 
   /* Scene 3G/3H/3I title groups — leave more clearance */
@@ -2474,9 +2513,16 @@ h1, h2, h3, h4, h5, h6, .hero-title {
     max-width: 85vw;
   }
 
+  /* Scene 3H hurricane: shrink + push down so it doesn't crash into the
+     wrapped "STORMS & HURRICANES" title on shorter viewports */
+  .s3h-hurricane-wrap {
+    width: clamp(150px, 18vw, 300px);
+    top: 62%;
+  }
+
   /* Scene 5A hint stays single-line on most laptops; ensure it doesn't get cropped */
   .s5a-enter-hint {
-    bottom: 6vh;
+    bottom: 10vh;
   }
 
   /* Scene 5B icons: shrink gap so 3 buttons fit comfortably */
